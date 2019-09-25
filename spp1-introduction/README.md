@@ -121,6 +121,24 @@ event, and a2a.
 |event|Specialized endpoint for connecting to SignalR for real-time events|
 |a2a|Application integration specific operations. Fetching passwords, making access requests on behalf of users, etc.|
 
+In a REST-based API, the standard HTTP methods are used to manipulate data
+resources that are identified by the path in the URL. The HTTP methods, `GET`,
+`POST`, `PUT`, and `DELETE`,  correspond with standard data manipulation verbs
+(CRUD):
+    - `POST` = `create`
+    - `GET` = `read`
+    - `PUT` = `update`
+    - `DELETE` = `delete`
+
+The exception to this rule is that the HTTP `POST` method is overloaded in
+several places in the Safeguard API to perform a `POST` action, when that
+particular action does not fit neatly into CRUD semantics. In these cases the
+path to that endpoint will end in a verb rather than a noun.
+
+For example, `POST` `service/core/v3/AccessRequests/{id}/Deny` is a `POST`
+action that denies an access request, whereas `POST`
+`service/core/v3/AccessRequests` is a `create` action.
+
 The Safeguard API is protected by TLS. SPP ships with a built-in self-signed
 certificate that should be replaced with a legitimate TLS certificate that is
 trusted in your organization.
@@ -136,7 +154,7 @@ curl -k -X GET --header 'Accept: application/json' --header "Authorization: Bear
 The resulting HTTP request looks like this:
 
 ```Text
-0000: GET /service/core/v2/Users HTTP/1.1
+0000: GET /service/core/v3/Users HTTP/1.1
 0025: Host: sg-vm1.dan.vas
 003b: User-Agent: curl/7.55.1
 0054: Accept: application/json
@@ -173,7 +191,7 @@ curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: appl
 ```
 
 ```Text
-0000: POST /service/core/v2/Users HTTP/2
+0000: POST /service/core/v3/Users HTTP/2
 0024: Host: sg-vm1.dan.vas
 003a: User-Agent: curl/7.58.0
 0053: Content-Type: application/json
