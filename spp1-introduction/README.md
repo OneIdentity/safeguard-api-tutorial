@@ -154,7 +154,7 @@ The resulting HTTP request looks like this:
 032e: 2SWxe0QP7L8cHRAH9ZJL77n3dqR8CHQX_JM4uMWmh-rgnqyJlhetMZ-Af0M_a_KA
 036e: 8IzZdGmCFd-NC8YgIW48_w0gJpM5qZCHG5rt1yOuqP6cbRB6hfOKko74Tkj63MuH
 03ae: tnKHGK9oLzZ9z03bZJyB1UHQTjQmj2naftwhjmiiX7TOg-CE3Q
-03e2: 
+03e2:
 ```
 
 Safeguard API uses URL versioning. The current version is "v3". The previous
@@ -193,7 +193,7 @@ curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: appl
 038d: d3KwQ9S3CLt5U4x_yDp-3c7H9p4YDwpD0sYfNZOw7dEeZr-Irpn3mSkq-Ar7Q0jh
 03cd: A32bN0fEzaz8kSn88uASj7dIYDAnxghkOl4W-mKhmgqu1cMiPw
 0401: Content-Length: 58
-0415: 
+0415:
 
 0000: {"PrimaryAuthenticationProviderId":-1,"UserName":"Doogie"}
 ```
@@ -203,5 +203,5 @@ the next few tutorials make it much easier--especially the obtaining the
 initial Safeguard API token. The exact cURL commands that could be used to
 obtain a Safeguard API token on your own are beyond the scope of this tutorial.
 
-*The source code of the safeguard-bash open source project shows how to get a
-Safeguard API token using cURL.*
+*The source code of the [safeguard-bash](https://github.com/oneidentity/safeguard-bash)
+open source project shows how to get a Safeguard API token using cURL.*
