@@ -200,4 +200,8 @@ curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: appl
 
 While calling the Safeguard API from cURL works, the open source projects from
 the next few tutorials make it much easier--especially the obtaining the
-initial Safeguard API token.
+initial Safeguard API token. The exact cURL commands that could be used to
+obtain a Safeguard API token on your own are beyond the scope of this tutorial.
+
+*The source code of the safeguard-bash open source project shows how to get a
+Safeguard API token using cURL*
