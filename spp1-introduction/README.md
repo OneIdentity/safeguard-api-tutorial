@@ -125,10 +125,11 @@ In a REST-based API, the standard HTTP methods are used to manipulate data
 resources that are identified by the path in the URL. The HTTP methods, `GET`,
 `POST`, `PUT`, and `DELETE`,  correspond with standard data manipulation verbs
 (CRUD):
-    - `POST` = `create`
-    - `GET` = `read`
-    - `PUT` = `update`
-    - `DELETE` = `delete`
+
+  - `POST` = `create`
+  - `GET` = `read`
+  - `PUT` = `update`
+  - `DELETE` = `delete`
 
 The exception to this rule is that the HTTP `POST` method is overloaded in
 several places in the Safeguard API to perform a `POST` action, when that
