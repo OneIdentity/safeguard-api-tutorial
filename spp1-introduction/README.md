@@ -111,7 +111,7 @@ To access the Swagger UI use a browser to navigate to:
 - `<service>` = Safeguard service to use
 
 The Safeguard API is made up of multiple services: core, appliance, notification,
-event, and a2a.  E
+event, and a2a.
 
 |Service|Description|
 |-|-|
