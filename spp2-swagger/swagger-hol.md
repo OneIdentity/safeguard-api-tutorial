@@ -311,3 +311,7 @@ change the IP address, reboot, shutdown, factory reset, take a backup, and do
 many other operations from this interface. There are a handful of endpoints
 that allow anonymous access, but most of them require an authenticated
 appliance admin.
+
+
+
+NEXT: [SPP 3 -- Using Postman to call the Safeguard API](spp3-postman)

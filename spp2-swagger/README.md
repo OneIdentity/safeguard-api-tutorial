@@ -27,7 +27,7 @@ interact with the Safeguard API in place without having to implement a client.
 
 ## Exercises
 
-[Hands-on Lab](swagger-hol.md)
+START HERE: [Hands-on Lab](swagger-hol.md)
 
 1. Find the Swagger OpenAPI file
 2. Find Swagger UI
@@ -37,3 +37,5 @@ interact with the Safeguard API in place without having to implement a client.
 6. Calling the core service to set the user password
 7. Using query parameters
 8. Maintenance operations available on the appliance service
+
+NEXT: [SPP 3 -- Using Postman to call the Safeguard API](spp3-postman)
