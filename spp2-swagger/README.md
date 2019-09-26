@@ -33,7 +33,7 @@ interact with the Safeguard API in place without having to implement a client.
 2. Find Swagger UI
 3. Calling the notification service -- anonymous GET
 4. Authenticate to Safeguard using Swagger UI
-5. Understanding the Swagger UI interface
-6. Calling the core service -- GET users
-7. Calling the core service -- POST create a user
-8. Calling the appliance service -- GET support bundle
+5. Calling the core service to create a user
+6. Calling the core service to set the user password
+7. Using query parameters
+8. Maintenance operations available on the appliance service
