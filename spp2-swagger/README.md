@@ -38,4 +38,4 @@ START HERE: [Hands-on Lab](swagger-hol.md)
 7. Using query parameters
 8. Maintenance operations available on the appliance service
 
-NEXT: [SPP 3 -- Using Postman to call the Safeguard API](spp3-postman)
+NEXT: [SPP 3 -- Using Postman to call the Safeguard API](../spp3-postman)
