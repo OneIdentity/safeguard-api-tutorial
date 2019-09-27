@@ -32,7 +32,7 @@ START HERE: [Hands-on Lab](postman-hol.md)
 2. Make a simple unauthenticated request
 3. Import directly from Safeguard OpenAPI file
 4. Import a starter collection for authentication
-5. Building and running a saved query
+5. Running a simple POST
 6. Building and running a saved collection
 
 NEXT: [SPP 4 -- Scripting with safeguard-ps](../spp4-safeguard-ps)

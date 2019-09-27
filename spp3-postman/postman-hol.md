@@ -188,8 +188,154 @@ To set this up easily, you need to download and import these two files:
 - [Authorize Collection](data/Authorize.postman_collection.json)
 - [Safeguard Environment](data/Safeguard.postman_environment.json)
 
-## 5. Building and running a saved query
+To download, click on the links above, and then right-click the `Raw` button
+and select `Save link as` to get the actual JSON file.
 
+First, you should upload the environment file.
 
+Click the `Import` button in the main Postman interface.
+
+Click the `Choose Files` button and select the
+`Safeguard.postman_environment.json` file that you downloaded.
+
+You will see a pop up in the the bottom right corner that it was imported.
+
+On the upper right side of the Postman interface, select the `No Environment`
+drop down and change it to `Safeguard Environment`.
+
+![Select Environment](img/select-environment.png)
+
+Then, click the eye ball icon next to the drop down and select the `Edit` link
+to modify the environment values.
+
+![Edit Environment](img/edit-environment.png)
+
+You will want to set the `CURRENT VALUE` for `appliance`, `user_name`, and
+`user_password` to the correct values for your SPP.
+
+![Update Environment](img/update-environment.png)
+
+Click the `Update` button and then press the `X` on the `MANAGE ENVIRONMENTS`
+window.
+
+Now, import the collection file.
+
+Click the `Import` button in the main Postman interface.
+
+Click the `Choose Files` button and select the
+`Authorize.postman_collection.json` file that you downloaded.
+
+You will see a pop up in the the bottom right corner that it was imported, and
+you will notice a new collection in the left pane.
+
+Click on the `Authorize` collection to show the three POST requests inside. In
+order to authenticate you need to run all three of the requests in succession.
+They will use the variables from the environment, `appliance`, `provider_name`,
+`user_name`, and `user_password` to authenticate you. If you are using Active
+Directory you can use the `provider_name` to make that work. For local accounts
+you can just leave the value set to `local`.
+
+As the collection runs, it will populate the other variables in the environment
+with values. When the entire collection run is successful, you will have a
+value for `safeguard_token`.
+
+To run the collection click the play button next to the `Authorize` collection.
+
+Then, click the `Run` button.
+
+This will load the `Collection Runner` form.
+
+Make sure that the `Safeguard Environment` environment is selected.
+
+Make sure that the `Keep variable values` check box is checked.
+
+Then, click the `Run Authorize` button.
+
+![Run Collection](img/run-collection.png)
+
+The `Run Results` tab in the dialog will show a failure if there is a failure,
+but it doesn't show much valuable information on a success.
+
+Close the `Collection Runner` dialog.
+
+Click on the eye ball icon next to the `Safeguard Environment` drop down.
+
+![Check Token](img/check-token.png)
+
+You should see a value for `safeguard_token`.
+
+Take a minute to look at the `Authorize` collection. Click on the `...` button
+and go to edit.  You will see that there are some collection variables set for
+`rstsUrl` and `coreUrl` that are generated based on the value of `appliance`
+from the environment.
+
+If you look at the attibute tabs of the requests in the `Authorize` collection,
+you will see examples of using variables in the `Body` and using `Tests` to set
+values for variables in the environment.
+
+Now that `safeguard_token` is set in the environment we can use it in other
+collections.
+
+To make this useful in your `core` collection:
+- Edit the collection
+- Click on the `Authorization` tab
+- Set the type to `Bearer Token`
+- Set the `Token` value to `{{safeguard_token}}`
+- Then, click `Update`
+
+To use this in one of the requests under `core`:
+- Pick any GET request (v3/Me for example)
+- Uncheck all of the query parameters on the `Params` tab
+- On the `Authorization` tab change the drop down to `Inherit auth from parent`
+- Then click the `Send` button
+
+You can save the request when you are done.
+
+PUT and POST requests are a little more difficult, because you have to build
+the JSON body that will be sent in the request. Most of the properties listed
+are not required. You can use Swagger UI or the information in the
+application/x-www-form-urlencoded version to determine which properties to
+send.
+
+Each time you customize a request to make it work, be sure to save it for
+future use.
+
+You may want to turn on
+`File -> Settings -> Always ask when closing unsaved tabs`.
+
+Another thing you may want to do is go back into your `core` collection and set
+it up to use the `appliance` variable rather than the `server` collection
+variable you created earlier.
+
+## 5. Running a simple POST
+
+First, let's use Postman to create a new asset partition in SPP. To do this
+you need to go under your `core` collection and find `POST Asset Partitions`.
+
+![Add Partition](img/add-partition.png)
+
+Select the `Body` tab and change it to `raw`. Change the `Text` drop down to
+`JSON`.
+
+Make sure to change `Authorization` tab to `Inherit auth from parent`.
+
+Make sure to change the `Content-Type` in `Headers` to `application/json`.
+
+Add the following body:
+
+```JSON
+{
+	"Name": "<pick a name>",
+	"Description": "Hands on lab partition"
+}
+```
+
+But, replacing `<pick a name>` with a name for your partition.
+
+![Send New Partition](img/send-new-partition.png)
+
+Take note of the "Id" that comes back in the response. You may need this value
+in the future.
 
 ## 6. Building and running a saved collection
+
