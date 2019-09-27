@@ -339,3 +339,112 @@ in the future.
 
 ## 6. Building and running a saved collection
 
+Some tasks in SPP take more than one request to the Safeguard API. Previously
+in Swagger UI, we created a user. In this step, you will modify the `Safeguard`
+collection to perform that task.
+
+First, remove the `GET Appliance Health` request by clicking on the `...`
+button next to the request and select `Delete` from the list.
+
+Click the `Delete` button on the confirmation dialog.
+
+Now, click the `...` button next to the `Safeguard` collection again and select
+the `Edit` option.
+
+Go to the `Variables` tab and add a variable called `coreUrl`.
+
+Set its `INITIAL VALUE` to `https://{{appliance}}/service/core` and that will
+propagated to the `CURRENT VALUE` as well.
+
+On the `Authorization` tab set the `TYPE` to `Bearer Token` and set `Token` to
+`{{safeguard_token}}`.
+
+Click the `Update` button.
+
+Rename the `Safeguard` collection to `New Local User` by clicking on the `...`
+button next the collection and selecting `Rename`.
+
+Click on the `...` button again and select `Add Request`.
+
+Call the new request `Create User Entity` and give it the description
+`Create a new user object in SPP`.
+
+Click the `Save to New Local User` button.
+
+Open the new `Create User Entity` request and change it to a `POST` in the drop
+down.
+
+Set the URL to `{{coreUrl}}/v3/Users`.
+
+The `Authorization` tab should already be set to `Inherit auth from parent`.
+
+Make sure to change the `Content-Type` in `Headers` to `application/json`.
+
+On the `Body` tab set it to `raw` and the drop down to `JSON`.
+
+Add the following body:
+
+```JSON
+{
+	"UserName": "<pick a name>",
+	"FirstName": "<pick a name>",
+	"LastName": "<pick a name>",
+	"PrimaryAuthenticationProviderId": -1
+}
+```
+
+Replacing with a user name, first name, and last name of your choice.
+
+![Create User Body](img/create-user-body.png)
+
+Click on the `Tests` tab and add the following:
+
+```JavaScript
+var jsonData = JSON.parse(responseBody);
+pm.environment.set("new_user_id", jsonData.Id);
+```
+
+Click `Save` to save the request.
+
+Now you will create another request for setting the password.
+
+Click on the `...` button again and select `Add Request`.
+
+Call the new request `Set User Password` and give it the description
+`Set the password for the new user in SPP`.
+
+Click the `Save to New Local User` button.
+
+Open the new `Create User Entity` request and change it to a `PUT` in the drop
+down.
+
+Set the URL to `{{coreUrl}}/v3/Users/{{new_user_id}}/Password`.
+
+The `Authorization` tab should already be set to `Inherit auth from parent`.
+
+Make sure to change the `Content-Type` in `Headers` to `application/json`.
+
+On the `Body` tab set it to `raw` and the drop down to `JSON`.
+
+Add the following body:
+
+```JSON
+"<pick a password>"
+```
+
+Replacing with a password of your choice.
+
+Click on the `Tests` tab and add the following:
+
+```JavaScript
+pm.environment.unset("new_user_id");
+```
+
+![Put Password Body](img/put-password-body.png)
+
+Click `Save` to save the request.
+
+Now run the `New Local User` collection.
+
+You will see that the first request returns 201 and the second request returns
+204, and there isn't a `new_user_id` variable leaked into your environment.
