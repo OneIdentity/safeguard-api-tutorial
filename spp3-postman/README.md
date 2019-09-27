@@ -14,8 +14,10 @@ advantages that improve the user experience. The biggest advantage is that
 Postman Collections can be customized to contain routine queries with prepared
 bodies saved for convenient use in future.
 
-We will also look at
+We will also look at using
 [Postman Scripts](https://learning.getpostman.com/docs/postman/scripts/intro_to_scripts/)
+and the
+[Postman Environments](https://learning.getpostman.com/docs/postman/environments_and_globals/intro_to_environments_and_globals/)
 which make it easy to handle more challenging API interactions, such as
 initial authentication to the Safeguard API. Postman Scripts can contain
 dynamic parameters and pass data between requests. They make it possible to
