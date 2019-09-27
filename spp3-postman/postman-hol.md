@@ -451,6 +451,9 @@ Now run the `New Local User` collection.
 You will see that the first request returns 201 and the second request returns
 204, and there isn't a `new_user_id` variable leaked into your environment.
 
+If something has gone wrong you can click on the name of the request to see
+exactly what was actually sent to the appliance, e.g. URL, headers, body, etc.
+
 This script could be refactored to take the fields for the new user and the new
 password from variables in the collection or you can modify the the body each
 time you run the collection.
