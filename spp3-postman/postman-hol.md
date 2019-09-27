@@ -446,5 +446,14 @@ Click `Save` to save the request.
 
 Now run the `New Local User` collection.
 
+![Collection Result](img/collection-result.png)
+
 You will see that the first request returns 201 and the second request returns
 204, and there isn't a `new_user_id` variable leaked into your environment.
+
+This script could be refactored to take the fields for the new user and the new
+password from variables in the collection or you can modify the the body each
+time you run the collection.
+
+
+NEXT: [SPP 4 -- Scripting with safeguard-ps](../spp4-safeguard-ps)
