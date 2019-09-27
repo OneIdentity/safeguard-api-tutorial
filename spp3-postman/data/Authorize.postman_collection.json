@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "1b843118-dd9c-4fde-8b2d-667f1c13aeeb",
+		"name": "Authorize",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Query Provider Scope",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "505d87c4-72f1-4337-8e23-9fd6c8ebcf72",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var providers = jsonData.Providers;",
+							"var providerName = pm.environment.get(\"provider_name\");",
+							"console.log(providerName);",
+							"var provider = providers.find(obj => {",
+							"    console.log(obj);",
+							"    return obj.DisplayName.toLowerCase() === providerName.toLowerCase();",
+							"});",
+							"pm.expect(provider).not.equal(null);",
+							"var providerScope = \"rsts:sts:primaryproviderid:\" + provider.Id;",
+							"pm.environment.set(\"provider_scope\", providerScope);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{rstsUrl}}/UserLogin/LoginController?response_type=token&redirect_uri=urn:InstalledApplication&loginRequestStep=1",
+					"host": [
+						"{{rstsUrl}}"
+					],
+					"path": [
+						"UserLogin",
+						"LoginController"
+					],
+					"query": [
+						{
+							"key": "response_type",
+							"value": "token"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "urn:InstalledApplication"
+						},
+						{
+							"key": "loginRequestStep",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This request queries the provider scope so that it can be included in the initial authentication to the rSTS."
+			},
+			"response": []
+		},
+		{
+			"name": "rSTS Token Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c6e804b3-c278-4595-b3db-41b2d6cf5c63",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"rsts_token\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"grant_type\": \"password\", \r\n  \"scope\": \"{{provider_scope}}\",\r\n  \"username\": \"{{user_name}}\",\r\n  \"password\": \"{{user_password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{rstsUrl}}/oauth2/token",
+					"host": [
+						"{{rstsUrl}}"
+					],
+					"path": [
+						"oauth2",
+						"token"
+					]
+				},
+				"description": "This is the request to rSTS to get an rSTS token using a password resource owners grant."
+			},
+			"response": []
+		},
+		{
+			"name": "Safeguard Token Exchange",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9480680c-0b0b-41a6-be71-e104e6f25fb4",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.expect(jsonData.Status).not.equal(\"Needs2FA\");",
+							"postman.setEnvironmentVariable(\"safeguard_token\", jsonData.UserToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"StsAccessToken\": \"{{rsts_token}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{coreUrl}}/v3/Token/LoginResponse",
+					"host": [
+						"{{coreUrl}}"
+					],
+					"path": [
+						"v3",
+						"Token",
+						"LoginResponse"
+					]
+				},
+				"description": "This request exchanges the rSTS token for a Safeguard API token."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "4151d0a9-c147-4354-adc2-b16f63de264f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "650c139b-f47e-4e47-9bfd-9da50644a385",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3c928dbe-7c10-45ac-931f-02a8cd94e7f2",
+			"key": "rstsUrl",
+			"value": "https://{{appliance}}/RSTS",
+			"type": "string"
+		},
+		{
+			"id": "fe1d59fa-ca08-43af-95ff-6aa5042c2520",
+			"key": "coreUrl",
+			"value": "https://{{appliance}}/service/core",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

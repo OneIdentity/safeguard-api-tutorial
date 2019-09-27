@@ -16,7 +16,7 @@ try to understand. Besides it is minified making it nearly impossible to read.
 If you opened the URL with Chrome or Firefox, your browser will automatically
 parse and format this huge JSON file so you can see the basic structure.
 
-![OpenAPI doc](open-api-doc.png)
+![OpenAPI doc](img/open-api-doc.png)
 
 You can see that as of this writing (SPP 2.10) the Safeguard API is using the
 Swagger or OpenAPI specification version 2.0.
@@ -63,7 +63,7 @@ with the `core` service. `notification` should load very quickly. Once the page
 loads, you will see a long list of top-level endpoints that are hosted by the
 service.
 
-![Notification Swagger](notification-swagger.png)
+![Notification Swagger](img/notification-swagger.png)
 
 ## 3. Calling the notification service -- anonymous GET
 
@@ -72,7 +72,7 @@ available beneath it. Then, click again on `GET /v3/Status/Availability`.
 This will expand to reveal an HTML form that allows you to interact with the
 selected endpoint.
 
-![Status Availability](status-availability.png)
+![Status Availability](img/status-availability.png)
 
 The top portion of the form contains a field that will show an example of the
 type of output the endpoint will produce. There is a link to `Model` which will
@@ -86,7 +86,7 @@ Click on the `Try it out!` button to call the `GET /v3/Status/Availability`
 endpoint. Swagger UI will issue an HTTP GET request to the server. The HTML
 form will expand to show the resulting output from the HTTP response.
 
-![Status Availability Output](status-availability-output.png)
+![Status Availability Output](img/status-availability-output.png)
 
 The `Response Body` field will have your output. The `Response Code` will
 indicate whether the call was successful. Anything in the 200s is success, but
@@ -123,7 +123,7 @@ Once the page opens, click on the `AssetPartitions` endpoint. Then, click on
 Click on `Try it out!` as you did before. This time the HTTP response will be
 an error because you are not authenticated.
 
-![AssetPartitions Error](assetpartitions-error.png)
+![AssetPartitions Error](img/assetpartitions-error.png)
 
 The `Response Code` and `Response Body` clearly indicate the error. Another
 error that you might see when calling endpoints on the `core` service is a 403
@@ -133,7 +133,7 @@ in SPP to use the endpoint.
 In order to authenticate, scroll back up to the top of the Swagger UI page and
 look for the `Authorize` button.
 
-![Authorize Button](authorize-button.png)
+![Authorize Button](img/authorize-button.png)
 
 Click on the `Authorize` button and authenticate as the bootstrap admin. You
 will go through the normal SPP authentication process.
@@ -147,7 +147,7 @@ this and future tutorials.
 Click on `POST /v3/Users` to expand that endpoint. The HTML form will expand
 to show more options for calling this endpoint.
 
-![POST Users](post-users.png)
+![POST Users](img/post-users.png)
 
 There are different types of parameters that can be passed in your HTTP request
 using Swagger UI. `POST` and `PUT` endpoints generally require a body for the
@@ -159,7 +159,7 @@ new user. You can click on the `Example Value` in the `Parameters` section to
 copy that value into the body for the `entity` parameter. You can generally
 delete most of the properties that get copied over.
 
-![POST body](post-body.png)
+![POST body](img/post-body.png)
 
 Make sure you use the corner of the `Value` field to give yourself enough room
 to compose your HTTP request body. If you switch over to `Model` you will see
@@ -191,7 +191,7 @@ The response will include a large JSON body representing the new user you just
 created. Take note of the "Id" field, because we will use that in the next
 step.
 
-![New User Response](new-user-response.png)
+![New User Response](img/new-user-response.png)
 
 ## 6. Calling the core service to set the user password
 
@@ -209,7 +209,7 @@ Then, you need to set the password. Notice that the `Parameter content type` is
 set to `application/json`. This means that I need to quote the string that I
 put into the body.
 
-![Set Password](set-password.png)
+![Set Password](img/set-password.png)
 
 Set your password to the quoted JSON string you want, then click the
 `Try it out!` button.
@@ -311,3 +311,7 @@ change the IP address, reboot, shutdown, factory reset, take a backup, and do
 many other operations from this interface. There are a handful of endpoints
 that allow anonymous access, but most of them require an authenticated
 appliance admin.
+
+
+
+NEXT: [SPP 3 -- Using Postman to call the Safeguard API](../spp3-postman)
