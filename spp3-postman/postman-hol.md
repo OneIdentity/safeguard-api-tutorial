@@ -178,7 +178,15 @@ main page, clicking on the three dots `...`, and selecting the `Rename` option.
 
 ## 4. Import a starter collection for authentication
 
+In order to use the Safeguard API from Postman you need to be able to
+authenticate. Authentication is a multi-step process with the Safeguard API, so
+it isn't possible to do that by creating a single request. In order for
+multiple requests to work together, they need to be part of a collection and
+they need to be able to pass information to one another via the environment.
 
+To set this up easily, you need to download and import these two files:
+- [Authorize Collection](data/Authorize.postman_collection.json)
+- [Safeguard Environment](data/Safeguard.postman_environment.json)
 
 ## 5. Building and running a saved query
 

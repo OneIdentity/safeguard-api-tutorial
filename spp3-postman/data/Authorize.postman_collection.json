@@ -183,13 +183,13 @@
 	],
 	"variable": [
 		{
-			"id": "e017e569-e8ee-4bce-985c-9526949f0a4d",
+			"id": "3c928dbe-7c10-45ac-931f-02a8cd94e7f2",
 			"key": "rstsUrl",
 			"value": "https://{{appliance}}/RSTS",
 			"type": "string"
 		},
 		{
-			"id": "7b34f69f-ee8f-43da-b2c8-3ec0da0f75ea",
+			"id": "fe1d59fa-ca08-43af-95ff-6aa5042c2520",
 			"key": "coreUrl",
 			"value": "https://{{appliance}}/service/core",
 			"type": "string"
