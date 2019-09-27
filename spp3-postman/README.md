@@ -12,7 +12,7 @@ We will look at
 which provide an interface similar to Swagger UI but with some additional
 advantages that improve the user experience. The biggest advantage is that
 Postman Collections can be customized to contain routine queries with prepared
-bodies saved for convenient use in future.
+bodies saved for convenient use in the future.
 
 We will also look at using
 [Postman Scripts](https://learning.getpostman.com/docs/postman/scripts/intro_to_scripts/)
@@ -29,7 +29,7 @@ setting the password, which took two steps in the previous tutorial.
 START HERE: [Hands-on Lab](postman-hol.md)
 
 1. Download and install Postman
-2. Make a simple request to notification
+2. Make a simple unauthenticated request
 3. Import directly from Safeguard OpenAPI file
 4. Import a starter collection for authentication
 5. Building and running a saved query
