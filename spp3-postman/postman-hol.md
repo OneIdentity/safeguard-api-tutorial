@@ -147,7 +147,34 @@ serve as a very good starting point with a little modification.
 
 Once you have made changes to a request you can save it back to the imported
 collection or you can use `Save as` to save it to a different collection. You
-will do this later on in this lab.
+will do this later on in this lab to add to the `Safeguard` collection we
+created earlier.
+
+Another thing you will notice about these imported requests is that the URL
+does not contain an appliance IP address or DNS name. Instead it contains the
+string `{{baseUrl}}`. This is a variable. Using such a variable is a really
+good idea because it allows you to switch the context of the entire collection
+to call a different appliance just by changing one value.
+
+![Edit Collection](img/edit-collection.png)
+
+To see the `baseUrl` variable, select your `v3` collection in the left pane and
+click on the three dots `...`. Select the `Edit` option. On the next form click
+on the `Variables` tab.
+
+![Collection Variables](img/collection-variables.png)
+
+On this view, you can change the `CURRENT VALUE` of the variable which is what
+will be sent to replace `{{baseUrl}}` in any of the requests in this
+collection. You could actually modify `baseUrl` to include `{{server}}` which
+would allow you to create another variable called `server` with just the IP
+address or DNS name of the target appliance.
+
+![Server Variable](img/server-variable.png)
+
+Before moving, you should rename your `v3` collection to `core`. You can do
+this on the `EDIT COLLECTION` view, or by selecting it in the left pane of the
+main page, clicking on the three dots `...`, and selecting the `Rename` option.
 
 ## 4. Import a starter collection for authentication
 
