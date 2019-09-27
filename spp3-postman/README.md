@@ -5,7 +5,7 @@ APIs. It is targeted at developers and testers, but it also works really well
 for admins and system integrators. Postman supports Windows, macOs, and Linux
 and includes many features and add-ons that go above and beyond what we need
 for this tutorial. What we will focus on is the very simple interface for
-calling REST-based APIs such as the Safeguard API. 
+calling REST-based APIs such as the Safeguard API.
 
 We will look at
 [Postman Collections](https://learning.getpostman.com/docs/postman/collections/intro_to_collections/)
@@ -29,7 +29,7 @@ START HERE: [Hands-on Lab](postman-hol.md)
 1. Download and install Postman
 2. Make a simple request to notification
 3. Import directly from Safeguard OpenAPI file
-4. Import a template for authentication
+4. Import a starter collection for authentication
 5. Building and running a saved query
 6. Building and running a saved collection
 
