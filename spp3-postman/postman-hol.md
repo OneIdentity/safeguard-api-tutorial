@@ -6,7 +6,7 @@ First, you need to download [Postman](https://www.getpostman.com/downloads/).
 
 Click on the Download button from the menu and select 64-bit.
 
-![Postman Download](postman-download.png)
+![Postman Download](img/postman-download.png)
 
 Run the installer after it downloads.
 
@@ -19,7 +19,7 @@ either by creating an account or signing in with your Google account.
 If you don't want to log in or create an account, there is a link to skip login
 at the bottom of the sign-in screen.
 
-![Postman Sign In](postman-sign-in.png)
+![Postman Sign In](img/postman-sign-in.png)
 
 If you decide to use Postman extensively in the future, I recommend creating an
 account so that your Postman Collections will be synchronized across devices.
@@ -31,7 +31,7 @@ thing we are going to do is make a simple request to SPP.
 
 Click on the `Request` button under `BUILDING BLOCKS`.
 
-![New Request](new-request.png)
+![New Request](img/new-request.png)
 
 Give the new request a name: `GET Appliance Health`.
 
@@ -41,7 +41,7 @@ Click on the `Create Collection` link to create a new Postman Collection.
 
 Call the new Postman Collection `Safeguard`.
 
-![Save Request](save-request.png)
+![Save Request](img/save-request.png)
 
 Click the check mark to save the `Safeguard` collection.
 
@@ -54,11 +54,11 @@ Before you click the `Send` button to send the request, you probably need to
 disable SSL verification. If you do, go to `File -> Settings` and turn off the
 toggle next to `SSL certificate verification`.
 
-![Disable SSL](disable-ssl.png)
+![Disable SSL](img/disable-ssl.png)
 
 Then, go back and click on the `Send` button.
 
-![Send Request](send-request.png)
+![Send Request](img/send-request.png)
 
 This should result in a successful query of the appliance health. You will
 will notice that you get pretty-printed JSON, and you can collapse elements of
@@ -89,7 +89,7 @@ an additional row of tabs that allow you to set different attributes of the
 request. This is where you would go to set parameters, fill in the request
 body, or modify request headers.
 
-![Request UI](request-ui.png)
+![Request UI](img/request-ui.png)
 
 With the method that we showed in step 2 of this lab, you have to create each
 individual request that you want to call. There is actually an easier way to
@@ -111,7 +111,7 @@ be able to right-click in Chrome to `Save as` or in Firefox you can click the
 `Save` button in the upper left of the view.  Once you have the file saved as
 `v3.json`. You will be able to import it into Postman.
 
-![Import Button](import-button.png)
+![Import Button](img/import-button.png)
 
 When the Import form pops up click on the `Choose Files` button.
 
@@ -126,7 +126,7 @@ If you go back to the `Collections` tab in the left pane and expand the `v3`
 node, you will see that the entire `core` service has been imported into
 Postman.
 
-![Imported Core](imported-core.png)
+![Imported Core](img/imported-core.png)
 
 Take a moment to to browser through all of the endpoints that have been loaded
 into Postman. This is the entire content of what you saw in the Swagger UI.

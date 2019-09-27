@@ -14,7 +14,7 @@ There are no backdoors. There no special internal interfaces that only One
 Identity can use. All of the functionality that you see in the SPP UI is
 presented based on interactions with the Safeguard API.
 
-![API Clients](api-clients.png)
+![API Clients](img/api-clients.png)
 
 This means that there is nothing that you cannot do with the Safeguard API
 that you can do in the SPP UI.
@@ -32,7 +32,7 @@ in the cluster. There is a primary appliance that is used for making
 configuration changes, but any appliance in the cluster can be modified to
 assume the primary role.
 
-![SPP Cluster](cluster.png)
+![SPP Cluster](img/cluster.png)
 
 When thinking of SPP product functionality, it is important to think of it as
 a highly available, redundant, fully consistent cluster solution rather than a
@@ -42,7 +42,7 @@ SPP clusters are also built to work with Safeguard for Privileged Sessions
 (SPS) appliances and clusters. SPP and SPS clusters can be joined together to
 allow SPP access request workflow and credentials to be used with SPS sessions.
 
-![Cluster Join](cluster-join.png)
+![Cluster Join](img/cluster-join.png)
 
 SPP and SPS actually do not share a single Safeguard API. Each product has a
 separate Safeguard API. They differ in authentication, versioning scheme, and
@@ -64,7 +64,7 @@ access to the virtual disks and virtual memory of a running SPP virtual
 appliance. However, there are some best practices for securing an SPP virtual
 appliance cluster.
 
-![Virtual](virtual.png)
+![Virtual](img/virtual.png)
 
 ## Authenticating to the Safeguard API
 
@@ -80,7 +80,7 @@ Authenticating to use the Safeguard API is a two step process. The initial
 authentication is against the rSTS which results in an rSTS token (JWT). This
 rSTS token is then exchanged for a Safeguard API token.
 
-![SPP Auth Process](spp-auth-process.png)
+![SPP Auth Process](img/spp-auth-process.png)
 
 rSTS authentication uses OAuth 2.0. Our rSTS supports several different grant
 types. **Authorization code grant** is used by the SPP desktop UI, the `-Gui`
