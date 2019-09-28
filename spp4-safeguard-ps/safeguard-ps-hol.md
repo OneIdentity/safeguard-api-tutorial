@@ -67,11 +67,54 @@ PS> Install-Module safeguard-ps -RequiredVersion 2.8.349
 
 ## 2. Check out safeguard-ps using git command line
 
+*If you are not interested in using git or checking out the code you can skip
+this section*
 
+Anyone can check out the safeguard-ps code from the OneIdentity/safeguard-ps
+GitHub repository.
+
+Open a PowerShell prompt and go to a directory where you want the code to be
+downloaded:
+
+```PowerShell
+PS> git clone git@github.com:OneIdentity/safeguard-ps.git
+```
+
+This will check out safeguard-ps using the SSH protocol. You can check it out
+unauthenticated because it is open source.
+
+If you want to actively participate in contributing the safeguard-ps project,
+you will want to create a GitHub account (for free) and create your own fork
+of the project.
+
+![Create Fork](img/fork.png)
+
+Then, you can make changes in your own git branch and create a pull request
+back to the OneIdentity/safeguard-ps repository. Forking, branching, and
+creating a pull request is beyond the scope of this lab.
 
 ## 3. Install safeguard-ps from GitHub by downloading a zip
 
+If for whatever version you cannot get the `Install-Module` method to work to
+install safeguard-ps, you can always just download the source from GitHub.
 
+Open a browser and go to: `github.com/oneidentity/safeguard-ps`
+
+![Download ZIP](img/download-zip.png)
+
+Click on the `Clone or download` button and click on the `Download ZIP`.
+
+Save the zip file and unzip it wherever you wish.
+
+Once it is unzipped you can go into the `safeguard-ps` folder and type:
+
+```PowerShell
+PS> ./install-local.ps1
+```
+
+This will install the latest source with a `.99999` final version number so
+that it will be preferred over any other safeguard-ps module that might be
+installed in another location.
 
 ## 4. Connecting to the Safeguard API
 
