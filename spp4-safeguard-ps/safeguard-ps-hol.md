@@ -354,7 +354,7 @@ call it. PowerShell has a built in cmdlet for determining usage.
 Run the following:
 
 ```PowerShell
-PS> Get-Help New-SafeguardAccessRequest
+PS> Get-Help New-SafeguardAccessRequest -Full
 ```
 
 Each safeguard-ps cmdlet includes usage information about each of the
@@ -362,7 +362,113 @@ parameters and a couple of examples.
 
 ## 6. Calling any endpoint using Invoke-SafeguardMethod
 
+If you use `Get-SafeguardCommand` and cannot find a specific cmdlet for the
+functionality that you are looking for, that doesn't mean you can't use
+safeguard-ps for your project.
 
+Every cmdlet in safeguard-ps is written in terms of a core safeguard-ps cmdlet
+called `Invoke-SafeguardMethod`.
+
+To see what it does run the following:
+
+```PowerShell
+PS> Get-Help Invoke-SafeguardMethod
+```
+
+Assuming you are using a session with `Connect-Safeguard`, the basic syntax for
+calling `Invoke-SafeguardMethod` is:
+
+`Invoke-SafeguardMethod` `<service>` `<http-method>` `<relative-url>`
+
+So, an example could be:
+
+`Invoke-SafeguardMethod core GET Users`
+
+But, as you can see from the `Get-Help` output there are a lot of other
+parameters available for customizing your request. The key parameters to know
+about are:
+
+| Parameter			| Description											| Parameter Value	|
+| -----				| -----													| -----				|
+| `-Accept`			| Specify what to pass for the HTTP Accept header		| application/json	|
+| `-ContentType`	| Specify what to pass for the HTTP Content-Type header	| application/json	|
+| `-Body`			| The body to pass in the request						| PowerShell object	|
+| `-JsonBody`		| The body to pass in the request						| JSON string		|
+| `-Parameters`		| The query parameters to pass in the request			| hash table		|
+| `-OutFile`		| Store the response in a file							| path to file		|
+
+The `-Parameters`, `-Body`, and `-JsonBody` parameters are the most useful. The
+easiest way to learn to use these is to try out a few examples.
+
+#### Specifying query parameters
+
+Run the following to find a specific user by name:
+
+```PowerShell
+PS> Invoke-SafeguardMethod core GET Users -Parameters @{ filter = "UserName icontains 'billy'"; fields = "UserName,AdminRoles" }
+```
+
+Notice that semicolons (`;`) are used instead of commas to separate properties
+in a hash table in PowerShell.
+
+#### Specifying a body
+
+The body can be built using a hash table, and it can actually be split across
+lines.
+
+Run the following to create a user:
+
+```PowerShell
+PS> Invoke-SafeguardMethod core POST Users -Body @{
+    UserName = "NewGuy"
+}
+```
+
+You will notice that the request fails. The error message says the request is
+invalid, but you can't see exactly what is wrong. If you tack on the `-Verbose`
+parameter you can see more of the response body that gives more information:
+
+```PowerShell
+PS> Invoke-SafeguardMethod core POST Users -Body @{
+    UserName = "NewGuy"
+} -Verbose
+```
+
+And, you will see the problem:
+
+```
+VERBOSE: {"Message":"The request is invalid.","ModelState":{"entity":["Required property 'PrimaryAuthenticationProviderId' not found in JSON. Path '', line 3, position
+1."],"entity.PrimaryAuthenticationProviderId":["The field PrimaryAuthenticationProviderId must be a valid non-zero database ID."]},"Code":70000}
+```
+
+So, adding the authentication provider Id (-1 is the built-in local provider):
+
+```PowerShell
+PS> Invoke-SafeguardMethod core POST Users -Body @{
+    UserName = "NewGuy";
+    PrimaryAuthenticationProviderId = -1
+}
+```
+
+#### Specifying a body as JSON
+
+Specifying a body as JSON is important for two reasons: 1) you happen to have
+the body already stored in a JSON string, and 2) it is actually difficult
+sometimes to get PowerShell to create objects properly when using shortcuts of
+hash tables to create them. In the latter case it can just be easier to throw
+in a string.
+
+The basic thing to know when dealing with JSON string bodies is that the
+escape character for double quotes (`"`) is the backtick character (`\``).
+
+Type in the following:
+
+```PowerShell
+PS> Invoke-SafeguardMethod core POST Users -JsonBody "{
+    `"UserName`":  `"AnotherNewGuy`",
+    `"PrimaryAuthenticationProviderId`": -1
+}"
+```
 
 ## 7. Creating assets and running management tasks
 
