@@ -39,7 +39,8 @@ START HERE: [Hands-on Lab](safeguard-ps-hol.md)
 3. Install safeguard-ps from GitHub by downloading a zip
 4. Connecting to the Safeguard API
 5. Finding a cmdlet and getting help to call it
-6. Creating assets and running management tasks
-7. Checking out passwords and launching sessions
-8. Getting a support bundle
-9. Setting up certificates and calling A2A
+6. Calling any endpoint using Invoke-SafeguardMethod
+7. Creating assets and running management tasks
+8. Checking out passwords and launching sessions
+9. Getting a support bundle
+10. Setting up certificates and calling A2A

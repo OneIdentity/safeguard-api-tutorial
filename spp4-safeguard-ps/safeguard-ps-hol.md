@@ -202,7 +202,7 @@ PS> Connect-Safeguard -Insecure
 
 cmdlet Connect-Safeguard at command pipeline position 1
 Supply values for the following parameters:
-Appliance: sg-vm1.dan.vas
+Appliance: <removed>
 (certificate, local, ad4 [company.corp])
 Provider: local
 Username: billybob
@@ -243,8 +243,8 @@ Instead of getting the full output of the HTTP request, you will just get a
 list of admin roles for the logged in user (hopefully you had some otherwise
 that command line above will appear to do nothing).
 
-You may have a situation you want to call SPP, but you don't want to create a
-session that persists between commands. You can do this by passing the
+You may have a situation where you want to call SPP, but you don't want to
+create a session that persists between commands. You can do this by passing the
 `-NoSessionVariable` parameter. This time we will also pass in several
 parameters directly on the command line.
 
@@ -302,19 +302,79 @@ Log out Successful.
 
 ## 5. Finding a cmdlet and getting help to call it
 
+Now that you know how to connect using safeguard-ps you need to know what
+cmdlets you can call. safeguard-ps includes a cmdlet just for that purpose.
+
+Run the following:
+
+```PowerShell
+PS> Get-SafeguardCommand
+```
+
+safeguard-ps currently includes 269 cmdlets, and the number is increasing all
+the time. SPP contains approximately 800 Safeguard API endpoints, which means
+there are specific endpoints that do not have safeguard-ps support.
+
+With so many cmdlets it can be difficult to find the functionality you may be
+looking for. The `Get-SafeguardCommand` cmdlet was built to accept up to three
+positional parameters to refine exactly the cmdlet that you need.
+
+One thing to know about PowerShell and cmdlets is that by convention they are
+always singular, e.g. the cmdlet is called `Get-SafeguardUser`, not
+`Get-SafeguardUsers`.
+
+Assuming you want to find cmdlets that deal with creating access requests, run
+the following:
+
+```PowerShell
+PS> Get-SafeguardCommand request
+```
+
+As you can see that returns a lot of results that may be difficult to look
+through. Try running it with multiple search tearms:
+
+```PowerShell
+PS> Get-SafeguardCommand new request
+```
+
+You can see that the cmdlet you are looking for to create new access requests
+is called `New-SafeguardAccessRequest`.
+
+All of the cmdlets in the safeguard-ps module are of the form:
+
+`<verb>-Safeguard<noun>`
+
+Not ust any verb should be used in a cmdlet. Microsoft publishes a list of
+verbs that are considered acceptable. See:
+[Cmdlet Verbs](https://docs.microsoft.com/en-us/powershell/developer/cmdlet/approved-verbs-for-windows-powershell-commands)
+
+When you find the cmdlet you want, it can be difficult to know exactly how to
+call it. PowerShell has a built in cmdlet for determining usage.
+
+Run the following:
+
+```PowerShell
+PS> Get-Help New-SafeguardAccessRequest
+```
+
+Each safeguard-ps cmdlet includes usage information about each of the
+parameters and a couple of examples.
+
+## 6. Calling any endpoint using Invoke-SafeguardMethod
 
 
-## 6. Creating assets and running management tasks
+
+## 7. Creating assets and running management tasks
 
 
 
-## 7. Checking out passwords and launching sessions
+## 8. Checking out passwords and launching sessions
 
 
 
-## 8. Getting a support bundle
+## 9. Getting a support bundle
 
 
 
-## 9. Setting up certificates and calling A2A
+## 10. Setting up certificates and calling A2A
 
