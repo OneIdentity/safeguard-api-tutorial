@@ -1,5 +1,17 @@
 # safeguard-ps Hands-on Lab
 
+The safeguard-ps cmdlets are much easier to use than Swagger UI or Postman. One
+way in which they are easier is that in most cases, cmdlets will prompt you for
+missing input rather than sending a partial request body to SPP. safeguard-ps
+is meant to be an interactive command line interface to SPP as well as a
+scripting language for automation. We will use it in both ways in this lab.
+
+safeguard-ps has some core functionality that can be used to send any sort of
+Safeguard API request, but it also has specific cmdlets for doing specific jobs
+in SPP.
+
+To start we will need to install safeguard-ps on your computer.
+
 ## 1. Install safeguard-ps from the PowerShell Gallery
 
 safeguard-ps is hosted on the PowerShell Gallery.
@@ -118,7 +130,175 @@ installed in another location.
 
 ## 4. Connecting to the Safeguard API
 
+Once you have safeguard-ps installed, you can use the `Connect-Safeguard`
+cmdlet to connect to SPP. Once connected you can call other cmdlets to interact
+with SPP.
 
+Let's start with an interactive connection that creates a safeguard-ps session.
+
+First, run the following:
+
+```PowerShell
+PS> Connect-Safeguard -Insecure
+```
+
+The `-Insecure` parameter tell safeguard-ps to ignore SSL certificate
+validation. You won't need that if you set up certificates correctly in SPP.
+
+safeguard-ps will respond with a prompt:
+
+```PowerShell
+
+cmdlet Connect-Safeguard at command pipeline position 1
+Supply values for the following parameters:
+Appliance:
+```
+
+safeguard-ps needs to know which appliance you would like to connect to. Type
+the DNS name or IP address of your appliance a press enter.
+
+safeguard-ps will respond with another prompt:
+
+```PowerShell
+(certificate, local, ad4 [company.corp])
+Provider:
+```
+
+SPP allows multiple identity and authentication providers for its users. By
+default there is a `local` provider for users that are internal to SPP and a
+`certificate` provider for users that authenticate with a client certificate.
+Certificate users are often used in automation. The bootstrap admin (named
+Admin) is an example of a user from the `local` provider.
+
+The `ad4 [company.corp]` provider is an Active Directory domain called
+company.corp that has been added to this SPP. You can select that provider by
+typing either `ad4` or `company.corp`.
+
+Type the name of your provider and press enter.
+
+safeguard-ps will respond by prompting for a user name:
+
+```PowerShell
+Username:
+```
+
+Type the name of your user and press enter.
+
+safeguard-ps will respond by prompting for a password:
+
+```PowerShell
+Password:
+```
+
+Type in your password and press enter.
+
+Notice that this time your input was masked.
+
+Safeguard will respond by saying your login was successful. The entire exchange
+should look something like this:
+
+```PowerShell
+PS> Connect-Safeguard -Insecure
+
+cmdlet Connect-Safeguard at command pipeline position 1
+Supply values for the following parameters:
+Appliance: sg-vm1.dan.vas
+(certificate, local, ad4 [company.corp])
+Provider: local
+Username: billybob
+Password: ***********
+Login Successful.
+
+```
+
+At this point safeguard-ps has created a login session for you. This means that
+you don't have to provide credentials when calling the other safeguard-ps
+cmdlets. They are all executed in the context of this initial connection. If
+you look at the top of your terminal window, you will see your connection
+information.
+
+![Terminal Connection Info](img/terminal-connection-info.png)
+
+Run the following command to reuse your session:
+
+```PowerShell
+PS> Get-SafeguardLoggedInUser
+```
+
+safeguard-ps will send an HTTP request to `GET service/core/v3/Me` but it will
+automatically fill out the `Authorization` header for you.
+
+You will notice the result to that cmdlet is not JSON. When making HTTP
+requests from PowerShell, the results are automatically converted for you into
+a PowerShell object. This makes it easy for you to use PowerShell scripting
+constructs on the output of safeguard-ps cmdlets.
+
+For example, run the same cmdlet again with this syntax:
+
+```PowerShell
+PS> (Get-SafeguardLoggedInUser).AdminRoles
+```
+
+Instead of getting the full output of the HTTP request, you will just get a
+list of admin roles for the logged in user (hopefully you had some otherwise
+that command line above will appear to do nothing).
+
+You may have a situation you want to call SPP, but you don't want to create a
+session that persists between commands. You can do this by passing the
+`-NoSessionVariable` parameter. This time we will also pass in several
+parameters directly on the command line.
+
+Type the following:
+
+```PowerShell
+PS> Connect-Safeguard -Insecure -Appliance <your server> -Provider local -Username <your username> -NoSessionVariable
+```
+
+You will see that SPP returns a giant string containing your Safeguard API
+token. In order to make use of it you need to capture it in a variable.
+
+Because safeguard-ps also supports positional parameters, you can type the
+following shorter form of the command:
+
+```PowerShell
+PS> $tok = (Connect-Safeguard -Insecure <your server> local <your username> -NoSessionVariable)
+```
+
+Before using `$tok` variable, you should log out of your session so that you
+can see that your specified token is being used rather than your session.
+
+```PowerShell
+PS> Disconnect-Safeguard
+Logging out *********** (local\billybob)
+
+Log out Successful.
+Session variable removed.
+```
+
+The output will show you that it logged out the session. What that really means
+is that that one token is logged out, but the token in `$tok` is still valid.
+
+To use the `$tok` variable, type the following:
+
+```PowerShell
+PS> Get-SafeguardLoggedInUser -Appliance <your server> -AccessToken $tok -Insecure
+```
+
+You will notice that you have to specify the `-Appliance` parameter and the
+`-Insecure` parameter when using the `-AccessToken` parameter to pass the
+`$tok` variable. Normally those values are stored along with the Safeguard API
+token in your session. safeguard-ps doesn't know what to use for those values
+when you don't have a session. One way to recognize that you haven't created a
+session yet is that you will try to run a cmdlet and will be prompted for an
+appliance when you don't expect it.
+
+You can invalidate the token stored in `$tok` by running the following:
+
+```PowerShell
+PS> Disconnect-Safeguard -Appliance <your server> -AccessToken $tok -Insecure
+
+Log out Successful.
+```
 
 ## 5. Finding a cmdlet and getting help to call it
 
