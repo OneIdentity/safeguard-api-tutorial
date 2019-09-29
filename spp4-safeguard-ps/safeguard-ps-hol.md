@@ -459,13 +459,14 @@ hash tables to create them. In the latter case it can just be easier to throw
 in a string.
 
 The basic thing to know when dealing with JSON string bodies is that the
-escape character for double quotes (`"`) is the backtick character (`\``).
+escape character for double quotes (") is the backtick character (`).
 
 Type in the following:
 
 ```PowerShell
 PS> Invoke-SafeguardMethod core POST Users -JsonBody "{
     `"UserName`":  `"AnotherNewGuy`",
+    `"AdminRoles`": [`"UserAdmin`",`"AssetAdmin`",`"PolicyAdmin`"],
     `"PrimaryAuthenticationProviderId`": -1
 }"
 ```
