@@ -360,6 +360,10 @@ PS> Get-Help New-SafeguardAccessRequest -Full
 Each safeguard-ps cmdlet includes usage information about each of the
 parameters and a couple of examples.
 
+PowerShell supports tab completion, which means you don't always have to type
+the complete name of a cmdlet. Just type a portion of it and press the tab key,
+and PowerShell will cycle through the known cmdlets that match what you typed.
+
 ## 6. Calling any endpoint using Invoke-SafeguardMethod
 
 If you use `Get-SafeguardCommand` and cannot find a specific cmdlet for the
@@ -473,7 +477,140 @@ PS> Invoke-SafeguardMethod core POST Users -JsonBody "{
 
 ## 7. Creating assets and running management tasks
 
+#### Background
 
+The following step requires that you either have SPP 2.10+ or that you have a
+real asset that you can place under management. You are going to create assets
+and then run platform tasks such as check password and change password on those
+assets. SPP 2.10+ includes a platform type called "Other Managed", which is a
+variation on the "Other" platform that SPP has had for some time.
+
+An "Other" asset is one that SPP will store the password for, but SPP does not
+maintain an active connection or service account for managing those passwords
+on the target system. This means the SPP will not check the password or change
+the password of account on a system of type "Other". The password will just be
+statically stored in SPP.
+
+On an "Other Managed" asset, SPP will store the password and check and change
+it periodically according to profile configuration. However, SPP still does
+not have an active connection or service account, but it rotates the password
+internally and sends event notifications when that is done. This can be useful
+for a variety of application to application and DevOps scenarios as well as
+custom platform scenarios involving one-way firewall rules.
+
+#### Creating an asset and an account
+
+If you don't have an asset partition created yet, you should create one using
+a command similar to the following (you can name it whatever you like):
+
+```PowerShell
+PS> New-SafeguardAssetPartition Hogwarts
+```
+
+Then, create an asset of type "Other Managed" in that new asset partition
+(again, name it whatever like):
+
+```PowerShell
+PS> New-SafeguardAsset -AssetPartition Hogwarts -Platform "Other Managed" Gryffindor
+```
+
+Then, you just need to create an account on the asset (use a different name if
+you like):
+
+```PowerShell
+PS> New-SafeguardAssetAccount Gryffindor hpotter
+```
+
+Now you have an asset called `Gryffindor` in the asset partition `Hogwarts`
+that has an account called `hpotter`, or you have the same entities but with
+the different names you chose instead.
+
+Run the following, supplying the names you used in the previous commands:
+
+```PowerShell
+PS> Get-SafeguardAssetAccount -Fields "AssetName,Name,HasPassword" Gryffindor hpotter
+
+AssetName  Name    HasPassword
+---------  ----    -----------
+Gryffindor hpotter       False
+```
+
+#### Running a management task
+
+As you can see SPP has the account, but it doesn't have a password. You can set
+the password with the following cmdlet, but then you will know the password
+because you are prompted for it:
+
+```PowerShell
+PS> Set-SafeguardAssetAccountPassword Gryffindor hpotter
+NewPassword: **********************
+
+```
+
+However, you can force SPP to change the password immediately with the
+following command:
+
+```PowerShell
+PS> Invoke-SafeguardAssetAccountPasswordChange Gryffindor hpotter
+Task completed successfully.
+```
+
+Password changes and other management tasks can be long-running when they
+involve network connections, so you will notice that a progress bar was shown
+at the top of the terminal.
+
+Now, if you run the following again:
+
+```PowerShell
+PS> Get-SafeguardAssetAccount -Fields "AssetName,Name,HasPassword" Gryffindor hpotter
+
+AssetName  Name    HasPassword
+---------  ----    -----------
+Gryffindor hpotter       True
+```
+
+You can see that `hpotter` now has a password in SPP.
+
+There a lot of other cmdlets that can be used to manage assets and accounts. In
+order to see all of them run:
+
+```PowerShell
+PS> Get-SafeguardCommand Asset
+```
+
+To get information about an individual cmdlet, an example of what you can run
+would be:
+
+```PowerShell
+> Get-Help New-SafeguardAssetAccountRandomPassword
+
+NAME
+    New-SafeguardAssetAccountRandomPassword
+
+SYNOPSIS
+    Generate an account password based on profile via the Web API.
+
+
+SYNTAX
+    New-SafeguardAssetAccountRandomPassword [-Appliance <String>] [-AccessToken <Object>] [-Insecure] [[-AssetToUse] <Object>] [-AccountToUse] <Object> [<CommonParameters>]
+
+
+DESCRIPTION
+    Generate an account password based on profile.  The password is not actually stored in
+    Safeguard, but it could be stored using Set-SafeguardAssetAccountPassword.  This can
+    be used to facilitate manual password management.
+
+
+RELATED LINKS
+
+REMARKS
+    To see the examples, type: "get-help New-SafeguardAssetAccountRandomPassword -examples".
+    For more information, type: "get-help New-SafeguardAssetAccountRandomPassword -detailed".
+    For technical information, type: "get-help New-SafeguardAssetAccountRandomPassword -full".
+```
+
+As you can see, that cmdlet would have been helpful to get a generated password
+to use with `Set-SafeguardAssetAccountPassword`.
 
 ## 8. Checking out passwords and launching sessions
 
