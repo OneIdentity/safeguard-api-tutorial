@@ -622,29 +622,167 @@ the following text:
 
 ```PowerShell
 Param(
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$true,Position=0)]
     [string]$PolicyName,
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$true,Position=1)]
     [string]$AssetName,
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$true,Position=2)]
     [string]$AccountName
 )
 
 $ErrorActionPreference = "Stop"
 
-try { Get-SafeguardLoggedInUser | Out-Null} catch { Write-Error "You must be logged in using Connect-Safeguard." }
+if ([string]::IsNullOrEmpty($SafeguardSession.AccessToken)) { Write-Error "You must be logged in using Connect-Safeguard." }
+try { $script:Me = (Get-SafeguardLoggedInUser) } catch { Write-Error "You must be logged in using Connect-Safeguard." }
 
+try { $script:Account = (Get-SafeguardPolicyAccount $AssetName $AccountName) } catch { Write-Error "Unable to find account $AssetName/$AccountName" }
+
+# Get or create entitlement
 try {
     $script:Entitlement = (Get-SafeguardEntitlement $PolicyName)
 }
 catch {
     $script:Entitlement = (New-SafeguardEntitlement $PolicyName)
 }
+
+# Add yourself as a member
+Invoke-SafeguardMethod core POST "Roles/$($script:Entitlement.Id)/Members/Add" -JsonBody "[{`"PrincipalKind`":`"User`",`"Id`":$($script:Me.Id)}]" | Out-Null
+
+# Get or create access policy
+$script:Policy = (Get-SafeguardAccessPolicy -EntitlementToGet $script:Entitlement.Id)
+$script:JsonBody = "{
+    `"Name`": `"$PolicyName`",
+    `"RoleId`": $($script:Entitlement.Id),
+    `"AccessRequestProperties`": {
+        `"AccessRequestType`": `"Password`",
+        `"AllowSimultaneousAccess`": true
+    },
+    `"ApproverProperties`": {
+        `"RequireApproval`": false
+    },
+    `"ScopeItems`": [{
+        `"Id`": $($script:Account.Id),
+        `"ScopeItemType`": `"Account`"
+    }]
+}"
+if (-not $script:Policy) {
+    $script:Policy = (Invoke-SafeguardMethod core POST "AccessPolicies" -JsonBody $script:JsonBody)
+}
+else {
+    Invoke-SafeguardMethod core PUT "AccessPolicies/$($script:Policy.Id)" -JsonBody $script:JsonBody | Out-Null
+}
+
+Write-Host -ForegroundColor Yellow "Entitlement:"
+Get-SafeguardEntitlement $script:Entitlement.Id -Fields Id,Name,Members.Id,Members.DisplayName | Out-Host
+
+Write-Host -ForegroundColor Yellow "Access Policy:"
+Get-SafeguardAccessPolicy $script:Policy.Id -Fields Id,Name,AccessRequestProperties.AccessRequestType,ScopeItems.ScopeItemType,ScopeItems.Id,ScopeItems.Name | Out-Host
 ```
+
+Then, run the script and specify a policy name, your new asset, and your new
+account that you created previously:
+
+```PowerShell
+PS> .\New-SafeguardTestPolicy.ps1 SuperGoodTest Gryffindor hpotter
+```
+
+The output of the script will show you that you have created a new entitlement
+with an access policy granting password access to your new asset account.
 
 ## 9. Checking out passwords and launching sessions
 
+In the last step you created an entitlement granting password access to your
+new asset account.
 
+There is a cmdlet that will show you all of the requests that you can make as
+the currently logged in user.
+
+Run the following as the same user that created the entitlement in the last
+step:
+
+```PowerShell
+PS> Get-SafeguardMyRequestable
+
+AssetId             : 9
+AssetName           : Gryffindor
+NetworkAddress      : Gryffindor
+PlatformDisplayName : Other Managed
+AccountId           : 10
+AccountDomainName   :
+AccountName         : hpotter
+AccountRequestTypes : {LocalPassword}
+```
+
+This output says that I have been granted password access to `Gryffindor` as
+`hpotter`.
+
+I can create an access request for that using the following cmdlet:
+
+```PowerShell
+PS> New-SafeguardAccessRequest Gryffindor hpotter password
+
+Id                  : 7306-1-4419154e2128482f9232e3e0a1708f41-0004
+AccessRequestType   : Password
+State               : RequestAvailable
+TicketNumber        :
+IsEmergency         : False
+AssetId             : 9
+AssetName           : Gryffindor
+AssetNetworkAddress : Gryffindor
+AccountId           : 10
+AccountDomainName   :
+AccountName         : hpotter
+```
+
+This has generated an access request that I can use to pull the password or
+copy it to the clipboard.
+
+To print out the password, run the following cmdlet passing the request Id from
+your new access request:
+
+```PowerShell
+PS> Get-SafeguardAccessRequestPassword 7306-1-4419154e2128482f9232e3e0a1708f41-0004
+nrDSrmS4H
+```
+
+I could have just as easily assigned that to a variable for use in a script.
+
+When access the password interactively it is better to use the clipboard. The
+following command works on Windows or macOs:
+
+```PowerShell
+PS> Copy-SafeguardAccessRequestPassword 7306-1-4419154e2128482f9232e3e0a1708f41-0004
+```
+
+When you are finished, you can check in your access request with the following:
+
+```PowerShell
+PS> Close-SafeguardAccessRequest 7306-1-4419154e2128482f9232e3e0a1708f41-0004
+```
+
+There are different cmdlets that are specific to session access requests:
+
+| Cmdlet								| Description																									|
+| -----									| -----																											|
+| Get-SafeguardAccessRequestRdpFile		| Get an RDP file for launching an RDP session opening the file will launch the session using file associations |
+| Get-SafeguardAccessRequestRdpUrl		| Get an RDP URL for launching an RDP session																	|
+| Get-SafeguardAccessRequestSshUrl		| Get an SSH URL for launching an SSH session (OpenSSH understands URLs)										|
+| Start-SafeguardAccessRequestSession	| Just launch the session regardless of what type it is															|
+
+You can try these cmdlets out if you have a connected asset and if you create
+a policy granting access to your user.
+
+There are other cmdlets that can be used to approve, deny, or review access
+requests:
+
+| Cmdlet								| Description																|
+| -----									| -----																		|
+| Get-SafeguardMyApproval				| Get all access requests for which I am an approver						|
+| Deny-SafeguardAccessRequest			| Deny an access request given the request ID								|
+| Approve-SafeguardAccessRequest		| Approve an access request given the request ID							|
+| Get-SafeguardMyReview					| Get all access requests for which I am a reviewer							|
+| Get-SafeguardAccessRequestActionLog	| Get all of the activity associated with an access request by request ID	|
+| Assert-SafeguardAccessRequest			| Mark an access requeset as reviewed given the request ID					|
 
 ## 10. Getting a support bundle
 
