@@ -786,7 +786,19 @@ requests:
 
 ## 10. Getting a support bundle
 
+You may need to get debug information out of SPP. safeguard-ps is probably the
+easiest way to do that.
 
+Run the following command:
+
+```PowerShell
+PS> Get-SafeguardSupportBundle
+This operation may take several minutes...
+Downloading support bundle to: C:\SG-spp1.example.corp-0930T211823Z-6.zip
+```
+
+By default, this cmdlet will get the right amount of data and include the
+appliance name and the timestamp for later reference.
 
 ## 11. Setting up certificates and calling A2A
 
