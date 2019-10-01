@@ -612,13 +612,43 @@ REMARKS
 As you can see, that cmdlet would have been helpful to get a generated password
 to use with `Set-SafeguardAssetAccountPassword`.
 
-## 8. Checking out passwords and launching sessions
+## 8. Creating a policy using a script
+
+Creating an entitlement and an access policy is a complex operation, and
+safeguard-ps doesn't currently contain specific cmdlets for calling each of the
+required endpoints yet. So, to execute this step you are going to create a
+script by creating a file called `New-SafeguardTestPolicy.ps1` and pasting in
+the following text:
+
+```PowerShell
+Param(
+    [Parameter(Mandatory=$true)]
+    [string]$PolicyName,
+    [Parameter(Mandatory=$true)]
+    [string]$AssetName,
+    [Parameter(Mandatory=$true)]
+    [string]$AccountName
+)
+
+$ErrorActionPreference = "Stop"
+
+try { Get-SafeguardLoggedInUser | Out-Null} catch { Write-Error "You must be logged in using Connect-Safeguard." }
+
+try {
+    $script:Entitlement = (Get-SafeguardEntitlement $PolicyName)
+}
+catch {
+    $script:Entitlement = (New-SafeguardEntitlement $PolicyName)
+}
+```
+
+## 9. Checking out passwords and launching sessions
 
 
 
-## 9. Getting a support bundle
+## 10. Getting a support bundle
 
 
 
-## 10. Setting up certificates and calling A2A
+## 11. Setting up certificates and calling A2A
 

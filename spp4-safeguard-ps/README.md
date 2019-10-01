@@ -41,6 +41,7 @@ START HERE: [Hands-on Lab](safeguard-ps-hol.md)
 5. Finding a cmdlet and getting help to call it
 6. Calling any endpoint using Invoke-SafeguardMethod
 7. Creating assets and running management tasks
-8. Checking out passwords and launching sessions
-9. Getting a support bundle
-10. Setting up certificates and calling A2A
+8. Creating a policy using a script
+9. Checking out passwords and launching sessions
+10. Getting a support bundle
+11. Setting up certificates and calling A2A
