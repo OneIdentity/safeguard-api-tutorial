@@ -4,7 +4,7 @@ One Identity Safeguard is built for integration with your existing systems.
 It is built for automation to facilitate your initial deployment and your
 on-going administration of the product. The key to automating and integrating
 with Safeguard is to become comfortable using the Safeguard API and the
-open source SDKs and scripting libraries created to support it.
+open source SDKs and the scripting libraries created to support it.
 
 ## Safeguard for Privileged Passwords (SPP)
 
