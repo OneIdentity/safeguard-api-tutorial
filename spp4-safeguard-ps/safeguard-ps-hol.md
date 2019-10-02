@@ -821,7 +821,8 @@ The password for `SampleCAUser.p12` and `SampleCAUser.key.pem` is `SampleCA`.
 #### Installing the certificates
 
 You will need to download these files in order to complete the next steps in
-this part of the lab.
+this part of the lab. Click on the links and use the `Raw` and `Download`
+buttons to get the files.
 
 Once you have the files downloaded, you need to add the trusted certificates.
 
