@@ -812,9 +812,9 @@ There are two trusted certifcates in the list, representing a two-level PKI:
 
 Then, there are two different representations of a user certificate:
 
-- [SampleCAUser.p12] -- PFX (PKCS#12) file containing both the certificate and private key
-- [SampleCAUser.cert.pem] -- User certificate in PEM format
-- [SampleCAUser.key.pem] -- User private key in PEM format
+- [SampleCAUser.p12](data/SampleCAUser.p12) -- PFX (PKCS#12) file containing both the certificate and private key
+- [SampleCAUser.cert.pem](data/SampleCAUser.cert.pem) -- User certificate in PEM format
+- [SampleCAUser.key.pem](data/SampleCAUser.key.pem) -- User private key in PEM format
 
 The password for `SampleCAUser.p12` and `SampleCAUser.key.pem` is `SampleCA`.
 
