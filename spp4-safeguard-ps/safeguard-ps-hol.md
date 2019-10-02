@@ -802,3 +802,164 @@ appliance name and the timestamp for later reference.
 
 ## 11. Setting up certificates and calling A2A
 
+In order call A2A you need to set up trusted certificates and create a
+certificate user. There are sample certificates in the [data directory](data).
+
+There are two trusted certifcates in the list, representing a two-level PKI:
+
+- [SampleCA.cert.pem](data/SampleCA.cert.pem) -- a root CA certificate in PEM format
+- [issuing-SampleCA.cert.pem](data/issuing-SampleCA.cert.pem) -- issuing CA certificate in PEM format
+
+Then, there are two different representations of a user certificate:
+
+- [SampleCAUser.p12] -- PFX (PKCS#12) file containing both the certificate and private key
+- [SampleCAUser.cert.pem] -- User certificate in PEM format
+- [SampleCAUser.key.pem] -- User private key in PEM format
+
+The password for `SampleCAUser.p12` and `SampleCAUser.key.pem` is `SampleCA`.
+
+#### Installing the certificates
+
+You will need to download these files in order to complete the next steps in
+this part of the lab.
+
+Once you have the files downloaded, you need to add the trusted certificates.
+
+Run the following two commands:
+
+```PowerShell
+PS> Install-SafeguardTrustedCertificate SampleCA.cert.pem
+```
+
+and
+
+```PowerShell
+PS> Install-SafeguardTrustedCertificate issuing-SampleCA.cert.pem
+```
+
+#### Creating a certificate user
+
+Now you need to create a new certificate user with a unique name. I'm using
+`BillyBobCert`.
+
+Run the following command with your own certificate user name:
+
+```PowerShell
+PS> New-SafeguardUser certificate BillyBobCert -Thumbprint (Get-PfxCertificate SampleCAUser.p12).Thumbprint
+```
+
+#### Logging in and troubleshooting on Windows
+
+Now, you should be able to test a user authentication using this certificate
+user. You can test it with `Connect-Safeguard`.
+
+Try logging in use the PFX file by specifying the following command (including
+the `-Verbose` parameter):
+
+```PowerShell
+PS> Connect-Safeguard -Insecure <server> -CertificateFile SampleCAUser.p12 -Verbose
+```
+
+This will fail due to a weirdness in the Windows TLS implementation. You are
+going to see the following in the output:
+
+```
+401: Unauthorized -- 0:
+```
+
+But, if you look closer in the verbose output, you will see this output:
+
+```
+VERBOSE: An exception was caught trying to authenticate to RSTS using a certificate.
+VERBOSE: Your problem may be an quirk on Windows where the low-level HTTPS client requires that you have the Issuing CA
+VERBOSE: in your 'Intermediate Certificate Authorities' store, otherwise Windows doesn't think you have a matching
+VERBOSE: certificate to send in the initial client connection. This occurs even if you pass in a PFX file specifying
+VERBOSE: exactly which certificate to use.
+```
+
+The solution to this issue is to install the issuing CA certificate in your
+"Intermediate Certification Authorities" store for the current user which is
+also known as the "Cert:\CurrentUser\CA" store in PowerShell.
+
+This can be done by running the following command:
+
+```PowerShell
+PS> Import-Certificate issuing-SampleCA.cert.pem -CertStoreLocation Cert:\CurrentUser\CA\
+```
+
+**IMPORTANT** -- Even after doing this the `Connect-Safeguard` cmdlet will
+continue to fail until you close the PowerShell window and reopen it. There is
+some caching that happens in the underlying HTTP client where it will not
+reload the potential list of issuers from the certificate store. It is not
+clear how long this cache lasts, so the best option is to just close and reopen
+your PowerShell window.
+
+Close and reopen your PowerShell window.
+
+Now, rerun the connect command (this time without the verbose):
+
+```PowerShell
+PS> Connect-Safeguard -Insecure <server> -CertificateFile SampleCAUser.p12
+```
+
+Now you are logged in as the certificate user. You can check this with the
+`Get-SafeguardLoggedInUser` cmdlet.
+
+```PowerShell
+PS> Get-SafeguardLoggedInUser -Fields UserName
+```
+
+#### Creating an A2A registration
+
+First, make sure you reconnect as your user that has more rights. The
+certificate user you just created does not have privileges for creating an A2A
+registration.
+
+Next, run the following command but think up a unique name for yours:
+
+```PowerShell
+PS> New-SafeguardA2a Hagrid -CertificateUser BillyBobCert
+```
+
+Then, add a credential retrieval to the A2A registration:
+
+```PowerShell
+PS> Add-SafeguardA2aCredentialRetrieval Hagrid Gryffindor hpotter
+```
+
+Make sure you copy the API key from the output, because it is necessary for
+calling the A2A password retrieval.
+
+#### Calling the A2A password retrieval
+
+The A2A retrieval cmdlets do not use your current login context. They are
+required to use client certificate authentication which can be secured by
+installing the client certificate in the current users private certificate
+store. This also means that you have to specify the target 
+
+To retrieve the password run the following command, replacing the values where
+appropriate:
+
+```PowerShell
+PS> Get-SafeguardA2aPassword -Appliance <server> -Insecure -CertificateFile SampleCAUser.p12 -ApiKey Ca3H1FWZAIlxNfPis5cMEwiyrfPKIJq5N+6BY/7YI44=
+```
+
+You'll notice you are prompted for a password for the PFX file. If you install
+the certificate in the current user store you can use the thumbprint alone and
+you will be able to request the password unattended.
+
+Install the certificate by running this command:
+
+```PowerShell
+PS> Import-PfxCertificate SampleCAUser.p12 -CertStoreLocation Cert:\CurrentUser\My -Password (ConvertTo-SecureString -AsPlainText -Force "SampleCA")
+```
+
+Then, run the following command to retrieve the password:
+
+```PowerShell
+PS> Get-SafeguardA2aPassword -Appliance sg-vm1.dan.vas -Insecure -Thumbprint A3B8452AD549F7C21D14B6D4DF31D6E2C1AC86D8 -ApiKey Ca3H1FWZAIlxNfPis5cMEwiyrfPKIJq5N+6BY/7YI44=
+```
+
+Of course, to do this securely you wouldn't deal with PFX files at all. Instead
+you would enroll the certificate against a trusted PKI using a CSR so that the
+private key never leaves the user store of the calling application.
