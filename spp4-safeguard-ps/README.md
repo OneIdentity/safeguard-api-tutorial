@@ -45,3 +45,5 @@ START HERE: [Hands-on Lab](safeguard-ps-hol.md)
 9. Checking out passwords and launching sessions
 10. Getting a support bundle
 11. Setting up certificates and calling A2A
+
+NEXT: [SPP 5 -- Scripting with safeguard-bash](../spp5-safeguard-bash)

@@ -964,3 +964,5 @@ PS> Get-SafeguardA2aPassword -Appliance sg-vm1.dan.vas -Insecure -Thumbprint A3B
 Of course, to do this securely you wouldn't deal with PFX files at all. Instead
 you would enroll the certificate against a trusted PKI using a CSR so that the
 private key never leaves the user store of the calling application.
+
+NEXT: [SPP 5 -- Scripting with safeguard-bash](../spp5-safeguard-bash)
