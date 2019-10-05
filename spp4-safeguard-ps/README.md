@@ -6,7 +6,7 @@ and information in Swagger UI is very important even when using the open source
 projects and SDKs. Swagger UI is the official documentation for the Safeguard
 API.
 
-In this portion of the tutorial, you will learn to use safeguard-ps, which is a
+In this portion of the tutorial you will learn to use safeguard-ps, which is a
 PowerShell module that adds cmdlets for connecting to and calling the Safeguard
 API.
 

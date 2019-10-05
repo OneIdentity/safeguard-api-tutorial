@@ -18,7 +18,7 @@ The following tutorials will help you to understand the SPP product design and
 how to manipulate SPP via the Safeguard API. Each tutorial includes some
 instruction and hands-on lab exercises to help you get familiar with new
 technologies and techniques. Upon completing these tutorials, you will find
-that using the Safeguard API and open source tools to deploy, automate, 
+that using the Safeguard API and open source tools to deploy, automate,
 monitor, and support your Safeguard installation is easy and effective.
 
 - [SPP 1 -- Introduction to the Safeguard API](spp1-introduction)
@@ -28,3 +28,10 @@ monitor, and support your Safeguard installation is easy and effective.
 - [SPP 5 -- Scripting with safeguard-bash](spp5-safeguard-bash)
 - [SPP 6 -- SPP integration using SafeguardDotNet](spp6-safeguarddotnet)
 
+For additional information following the tutorial, please visit our open source
+projects also hosted on GitHub:
+
+- [safeguard-ps](https://github.com/OneIdentity/safeguard-ps)
+- [safegaurd-bash](https://github.com/OneIdentity/safeguard-bash)
+- [SafeguardDotNet](https://github.com/OneIdentity/SafeguardDotNet)
+- [SafeguardJava](https://github.com/OneIdentity/SafeguardJava)
