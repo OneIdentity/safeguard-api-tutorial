@@ -300,6 +300,21 @@ PS> Disconnect-Safeguard -Appliance <your server> -AccessToken $tok -Insecure
 Log out Successful.
 ```
 
+In order to use 2FA with safeguard-ps, you need to have a browser to walk
+through the individual steps of authentication. All forms of 2FA authentication
+except for FIDO2 can be used with safeguard-ps by using `Connect-Safeguard`
+with the `-Gui` parameter, which will launch a browser to complete the
+authentication.
+
+Run the following:
+
+```PowerShell
+PS> Connect-Safeguard -Appliance <your server> -Gui -Insecure
+```
+
+You will notice that this uses the same login experience that is used by the
+SPP desktop and web UIs.
+
 ## 5. Finding a cmdlet and getting help to call it
 
 Now that you know how to connect using safeguard-ps you need to know what
@@ -936,7 +951,7 @@ calling the A2A password retrieval.
 The A2A retrieval cmdlets do not use your current login context. They are
 required to use client certificate authentication which can be secured by
 installing the client certificate in the current users private certificate
-store. This also means that you have to specify the target 
+store. This also means that you have to specify the target
 
 To retrieve the password run the following command, replacing the values where
 appropriate:
@@ -958,7 +973,7 @@ PS> Import-PfxCertificate SampleCAUser.p12 -CertStoreLocation Cert:\CurrentUser\
 Then, run the following command to retrieve the password:
 
 ```PowerShell
-PS> Get-SafeguardA2aPassword -Appliance sg-vm1.dan.vas -Insecure -Thumbprint A3B8452AD549F7C21D14B6D4DF31D6E2C1AC86D8 -ApiKey Ca3H1FWZAIlxNfPis5cMEwiyrfPKIJq5N+6BY/7YI44=
+PS> Get-SafeguardA2aPassword -Appliance <your server> -Insecure -Thumbprint A3B8452AD549F7C21D14B6D4DF31D6E2C1AC86D8 -ApiKey Ca3H1FWZAIlxNfPis5cMEwiyrfPKIJq5N+6BY/7YI44=
 ```
 
 Of course, to do this securely you wouldn't deal with PFX files at all. Instead
