@@ -224,12 +224,120 @@ The output will tell you the name of the file where the bundle was stored. You
 can `cat` the bundle to see what it looks like, but it is just a chain of
 certificates in PEM format.
 
+Connecting to the Safeguard API using a directory user is a little more
+difficult with safeguard-bash than it is with safeguard-ps. safeguard-bash
+won't prompt you with the actual names of domains or LDAP directories. If you
+pass in the `-q` option, it will query the provider IDs from the Safeguard API,
+and you can specify the right one using the `-i` option.
+
+For example, if you run with the `-q` option and get this prompt:
+
+```Bash
+$ ./connect-safeguard.sh -q -a <your server>
+Identity Provider (certificate local ad4[company.corp]):
+```
+
+And, you wanted to select `company.corp`, then you would type `ad4` at the
+prompt.
+
 ## 4. A few purpose-built scripts
 
+As of this writing (SPP 2.10) safeguard-bash only has about 25 purpose-built
+scripts. You can see what they are by listing the contents of the scripts
+directory where they were installed (or in the docker container it is just
+`/scripts` from the root). Each one of those scripts includes the `-h` option
+to tell you how to call it.
 
+All of the scripts in there are useful, but the majority of the scripts are
+specialized to make it easy to use safeguard-bash for event listening and A2A
+use cases. Other scripts that are included allow you to use safeguard-bash
+to request a password or session via access request.
+
+The `get-event.sh` script produces a grep-able list of all of the events that
+can be produced in SPP. This is useful when using the `listen-for-event.sh` and
+`handle-event.sh` scripts.
+
+In any script use case where there isn't going to be a human, it is recommended
+to use a certificate user rather than a user name and password for
+authentication. The `new-certificate-user.sh` script can help you to create a
+new certificate user that can be used in an A2A registration or that can be
+used to authenticate via `connect-safeguard.sh` and then used for event
+handling use cases.
 
 ## 5. Calling any endpoint using invoke-safeguard-method.sh
 
+One unique script in safeguard-bash is the `show-safeguard-method.sh` script.
+It can be used to get information about the Safeguard API similar to the
+information that you would see in Swagger. It only works with a logged in
+session that is stored in the file.
+
+Try running:
+
+```Bash
+$ show-safeguard-method.sh -s core -U Users
+```
+
+This will show a list of all the URLs and methods that you can call that start
+with `Users`.
+
+To get specific information, try running:
+
+```Bash
+$ show-safeguard-method.sh -s core -U Users -m POST
+```
+
+The output shows you everything that you need to know to call this endpoint
+using `invoke-safeguard-method.sh`.
+
+You can create a new user this way. Pick a name different than `Pickles` and
+use it to create a new user by swapping that out in the body below. You will
+need to do that with all of the other examples below as well.
+
+When calling `invoke-safeguard-method.sh` you need to specify the body in JSON,
+which can get tricky. You can use a single quote to make it easier or you can
+use a heredoc:
+
+```Bash
+$ invoke-safeguard-method -s core -m POST -U Users -b '{"UserName":"Pickles","PrimaryAuthenticationProviderId":-1,"AdminRoles":["UserAdmin","PolicyAdmin","ApplianceAdmin","AssetAdmin"]}'
+```
+
+The heredoc example might be easier to type:
+
+```Bash
+$ invoke-safeguard-method.sh -s core -m POST -U Users -b "$(cat <<EOF
+{
+"UserName":"Raspberry",
+"PrimaryAuthenticationProviderId":-1
+}
+EOF
+)"
+```
+
+If you decide to use double quotes, you need to escape the quotes in the JSON:
+
+```Bash
+$ invoke-safeguard-method.sh -s core -m POST -U Users -b "{
+\"UserName\":\"blueberry\",
+\"PrimaryAuthenticationProviderId\":-1
+}"
+```
+
+Heredocs and double quotes are useful because they allow you to pass variables
+into the JSON bodies from your script.
+
+```Bash
+$ SomeName=BigBird
+$ invoke-safeguard-method.sh -s core -m POST -U Users -b "$(cat <<EOF
+{
+"UserName":"$SomeName",
+"PrimaryAuthenticationProviderId":-1
+}
+EOF
+)"
+```
+
+Using the heredoc prevents the need for using backslash to escape every double
+quote in the entire JSON body.
 
 
 ## 6. Listening for events
