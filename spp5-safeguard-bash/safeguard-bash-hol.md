@@ -200,6 +200,30 @@ $ echo $tok
 Once you are logged in, you can call a purpose-built script or use
 `invoke-safeguard-method.sh` to call any endpoint in the Safeguard API.
 
+One thing you may have noticed is that safeguard-bash doesn't have an
+equivalent to the `-Insecure` parameter from safeguard-ps. By default,
+safeguard-bash actually has the opposite behavior of ignoring certificate
+errors. The reason for this is that on most platform bash doesn't have a
+clearly defined store for trusted certificates. If you would like to verify
+certificates, you need to pass a trusted certificate bundle on the command line
+using the `-B` option. It takes a file as an argument.
+
+safeguard-bash provides a convenience script for downloading a trusted
+certificate bundle directly from the Safeguard API that can be used in future
+calls. This means you can export the bundle from a secure environment and then
+require it in production to be sure that you are talking to the correct
+appliance.
+
+To extract a trusted certificate bundle, connect and run:
+
+```Bash
+$ get-trusted-ca-bundle.sh
+```
+
+The output will tell you the name of the file where the bundle was stored. You
+can `cat` the bundle to see what it looks like, but it is just a chain of
+certificates in PEM format.
+
 ## 4. A few purpose-built scripts
 
 
