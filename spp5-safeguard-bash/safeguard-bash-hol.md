@@ -404,5 +404,10 @@ events to pass to the `-E` option using the `get-event.sh` script.
 You also need to use the `-S` option to pass a handler script to
 `handle-event.sh`.
 
+**TODO**
+
 ## 7. Handling password changes with A2A events
 
+**TODO**
+
+NEXT: [SPP 6 -- SPP integration using SafeguardDotNet](../spp6-safeguarddotnet)
