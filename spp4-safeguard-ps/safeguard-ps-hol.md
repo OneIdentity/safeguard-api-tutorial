@@ -973,7 +973,7 @@ PS> Import-PfxCertificate SampleCAUser.p12 -CertStoreLocation Cert:\CurrentUser\
 Then, run the following command to retrieve the password:
 
 ```PowerShell
-PS> Get-SafeguardA2aPassword -Appliance sg-vm1.dan.vas -Insecure -Thumbprint A3B8452AD549F7C21D14B6D4DF31D6E2C1AC86D8 -ApiKey Ca3H1FWZAIlxNfPis5cMEwiyrfPKIJq5N+6BY/7YI44=
+PS> Get-SafeguardA2aPassword -Appliance <your server> -Insecure -Thumbprint A3B8452AD549F7C21D14B6D4DF31D6E2C1AC86D8 -ApiKey Ca3H1FWZAIlxNfPis5cMEwiyrfPKIJq5N+6BY/7YI44=
 ```
 
 Of course, to do this securely you wouldn't deal with PFX files at all. Instead

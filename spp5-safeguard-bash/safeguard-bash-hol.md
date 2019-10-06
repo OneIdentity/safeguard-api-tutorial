@@ -177,13 +177,13 @@ the `connect-safeguard.sh` script to read the password from stdin.
 Then, you can call the script like this:
 
 ```Bash
-$ connect-safeguard.sh -a sg-vm1.dan.vas -i local -u billybob -p <<<BillyBob123
+$ connect-safeguard.sh -a <your server> -i local -u billybob -p <<<BillyBob123
 ```
 
 It works equally well if the password is stored in a variable:
 
 ```Bash
-$ connect-safeguard.sh -a sg-vm1.dan.vas -i local -u billybob -p <<<$password
+$ connect-safeguard.sh -a <your server> -i local -u billybob -p <<<$password
 ```
 
 You can use the `-X` option to tell `connect-safeguard.sh` to just return the
@@ -191,9 +191,9 @@ raw token rather than creating the login file. You can capture the raw token in
 a variable using either the backtick or subshell syntax.
 
 ```Bash
-$ tok=`connect-safeguard.sh -a sg-vm1.dan.vas -i local -u billybob -X -p <<<BillyBob123`
+$ tok=`connect-safeguard.sh -a <your server> -i local -u billybob -X -p <<<BillyBob123`
 $ echo $tok
-$ tok=$(connect-safeguard.sh -a sg-vm1.dan.vas -i local -u billybob -X -p <<<BillyBob123)
+$ tok=$(connect-safeguard.sh -a <your server> -i local -u billybob -X -p <<<BillyBob123)
 $ echo $tok
 ```
 
@@ -339,10 +339,70 @@ EOF
 Using the heredoc prevents the need for using backslash to escape every double
 quote in the entire JSON body.
 
+You can also user query parameters with `invoke-safeguard-method.sh`.
+
+The following is an example of using the `fields` query parameter:
+
+```Bash
+$ invoke-safeguard-method.sh -s core -m GET -U Users?fields=UserName,AdminRoles
+```
+
+If you want to specify more than one query parameter, then you need to use an
+ampersand and pass the query arguments just as you normally would in a URL. You
+also need to escape spaces. If you don't quote the URL string then it wil be
+interpreted by the shell, and it won't work.
+
+Run the following:
+
+```Bash
+$ invoke-safeguard-method.sh -s core -m GET -U "Users?fields=UserName,AdminRoles&filter=UserName%20eq%20'Pickles'"
+```
 
 ## 6. Listening for events
 
+In this step you have to be able to get the `listen-for-event.sh` script
+working. The best way to do this is to run from Linux or inside a Docker
+container. `stdbuf` and a proper version of `sed` are required to make it work.
+As of this writing, even if you have those tools, it won't work on macOs. There
+is an issue that still needs to be fixed.
 
+In order to work on this step you will need to have two windows open, one to
+make a change via the Safeguard API and another one to watch the change happen.
+You can either open two separate terminal windows or use a tool such as `tmux`
+to open two separate panes side by side. Another option is to cause events in
+PowerShell or in the desktop UI.
+
+In the first window, connect to the Safeguard API using a user that has the
+ability to create users (a user admin).
+
+```Bash
+$ connect-safeguard.sh -a <your server> -i local -u billybob
+```
+
+To begin listening for events you just need to run `listen-for-event.sh`.
+
+```Bash
+$ listen-for-event.sh
+```
+
+You should see immediate output coming from the script. You have to hit ctrl-C
+to end the script or it will just continue listening and printing out events as
+they occur.
+
+In another window or in the UI create a new user. You should see the entire
+event print out to the screen in the first window.
+
+The `handle-event.sh` script was created to persistently handle events even if
+connections are dropped and reconnected. The `handle-event.sh` script will not
+use your existing connection, instead it requires credentials so that it can
+reconnect even if the access token is expired.
+
+The `handle-event.sh` script has an `-E` option that is used to specify the
+name of the event that you want to handle. You can find the names for possible
+events to pass to the `-E` option using the `get-event.sh` script.
+
+You also need to use the `-S` option to pass a handler script to
+`handle-event.sh`.
 
 ## 7. Handling password changes with A2A events
 

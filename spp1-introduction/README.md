@@ -156,7 +156,7 @@ The resulting HTTP request looks like this:
 
 ```Text
 0000: GET /service/core/v3/Users HTTP/1.1
-0025: Host: sg-vm1.dan.vas
+0025: Host: <your server>
 003b: User-Agent: curl/7.55.1
 0054: Accept: application/json
 006e: Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjBGRDREOEIyRD
@@ -193,7 +193,7 @@ curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: appl
 
 ```Text
 0000: POST /service/core/v3/Users HTTP/2
-0024: Host: sg-vm1.dan.vas
+0024: Host: <your server>
 003a: User-Agent: curl/7.58.0
 0053: Content-Type: application/json
 0073: Accept: application/json
