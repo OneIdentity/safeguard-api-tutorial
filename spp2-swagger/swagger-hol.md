@@ -9,20 +9,16 @@ To access the Swagger OpenAPI file use a browser to navigate to:
 - Replace `<address>` with your appliance network address or DNS name.
 - Replace `<service>` with one of `core`, `appliance`, or `notification`.
 
-When you open this URL you will see a very large JSON document. This JSON
-document describes the Safeguard API. This JSON document is far too large to
-try to understand. Besides it is minified making it nearly impossible to read.
-
-If you opened the URL with Chrome or Firefox, your browser will automatically
-parse and format this huge JSON file so you can see the basic structure.
+It is recommended you open the URL in Firefox or another JSON parser so the large
+JSON file is parsed and formatted. This allows you to view the basic stturcture.
 
 ![OpenAPI doc](img/open-api-doc.png)
 
-You can see that as of this writing (SPP 2.10) the Safeguard API is using the
+You can see that as of this writing (SPP 2.10) the SPP API is using the
 Swagger or OpenAPI specification version 2.0.
 
 Expanding the `paths` node in Firefox or another JSON document parser will show
-all of the endpoints published for this service in the Safeguard API.
+all of the endpoints published for this service in the SPP API.
 
 Expanding an individual path will show the HTTP methods that are available for
 that path, e.g. `get`, `post`, `put`, `delete`. These methods correspond with
@@ -34,7 +30,7 @@ standard data manipulation verbs (CRUD):
   - `delete` = `delete`
 
 The exception to this rule is that the HTTP `post` method is overloaded in
-several places in the Safeguard API to perform a `post` action, when that
+several places in the SPP API to perform a `post` action, when that
 particular action does not fit neatly into CRUD semantics. In these cases the
 path to that endpoint will end in a verb rather than a noun.
 
@@ -42,7 +38,7 @@ For example, `post` `service/core/v3/AccessRequests/{id}/Deny` is a `post`
 action, whereas `post` `service/core/v3/AccessRequests` is a `create` action.
 
 Expanding the `definitions` node will show all of the data transfer objects
-(DTOs) that are published for this service in the Safeguard API. DTOs are the
+(DTOs) that are published for this service in the SPP API. DTOs are the
 data representations that are passed back and forth from REST APIs.
 
 ## 2. Find Swagger UI
@@ -51,16 +47,15 @@ Let's start by looking at the `notification` service.
 
 To access the Swagger UI use a browser to navigate to:
 
-`https://<address>/service/<service>/swagger`
+`https://<address>/service/notification/swagger`
 
-But, replace `<service>` with `notification`. Your browser will be
-automatically redirected to:
+Your browser will be automatically redirected to:
 
-`https://<address>/service/<service>/swagger/ui/index`
+`https://<address>/service/notification/swagger/ui/index`
 
 Sometimes Swagger UI can take a significant amount of time to load, especially
 with the `core` service. `notification` should load very quickly. Once the page
-loads, you will see a long list of top-level endpoints that are hosted by the
+loads, you will see a list of top-level endpoints that are hosted by the
 service.
 
 ![Notification Swagger](img/notification-swagger.png)
@@ -68,13 +63,13 @@ service.
 ## 3. Calling the notification service -- anonymous GET
 
 Click on `Status` to expand that endpoint to reveal the endpoints that are
-available beneath it. Then, click again on `GET /v3/Status/Availability`.
+available beneath it. Then, click on `GET /v3/Status/Availability`.
 This will expand to reveal an HTML form that allows you to interact with the
-selected endpoint.
+selected endpoint. See the illustration and description that follows:
 
 ![Status Availability](img/status-availability.png)
 
-The top portion of the form contains a field that will show an example of the
+As shown in the above illustration, the top portion of the form contains a field that will show an example of the
 type of output the endpoint will produce. There is a link to `Model` which will
 switch to a view that gives detailed information about the object properties in
 the `Example Value`. The drop down next to `Response Content Type` will allow
@@ -83,8 +78,8 @@ most useful output, but for reporting use cases `text/csv` is also very
 helpful.
 
 Click on the `Try it out!` button to call the `GET /v3/Status/Availability`
-endpoint. Swagger UI will issue an HTTP GET request to the server. The HTML
-form will expand to show the resulting output from the HTTP response.
+endpoint. The Swagger UI issues an HTTP GET request to the server. The HTML
+form expands to show the resulting output from the HTTP response. See the following illustration and description.
 
 ![Status Availability Output](img/status-availability-output.png)
 
@@ -93,7 +88,7 @@ indicate whether the call was successful. Anything in the 200s is success, but
 anything in the 400s or 500s is a failure. Most of the time failures will
 include additional information in the `Response Body` field. The
 `Response Headers` can be useful for authenticated requests. They will include
-a header that tells you how much time is left on your Safeguard API token.
+a header that tells you how much time is left on your SPP API token.
 
 If you look at the information in the `Response Body` you can see that the
 SPP appliance is in the "Online" state. This `notification` endpoint is always
@@ -102,17 +97,17 @@ cURL command listed here could be used from a load balancer to determine
 whether or not this SPP appliance is "Online". It can also determine whether
 this appliance "IsPrimary".
 
-## 4. Authenticate to Safeguard using Swagger UI
+## 4. Authenticate to SPP using Swagger UI
 
 Let's move on to the `core` service where we can actually make changes to SPP
 configuration. Change the URL in your browser to:
 
-`https://<address>/service/<service>/swagger`
+`https://<address>/service/core/swagger`
 
-But, replace `<service>` with `core`. Your browser will be automatically
+Your browser will be automatically
 redirected to:
 
-`https://<address>/service/<service>/swagger/ui/index`
+`https://<address>/service/core/swagger/ui/index`
 
 This time it will take a while for the page to load. Swagger UI is processing
 a much larger OpenAPI file.
@@ -144,8 +139,8 @@ this and future tutorials.
 
 ## 5. Calling the core service to create a user
 
-Click on `POST /v3/Users` to expand that endpoint. The HTML form will expand
-to show more options for calling this endpoint.
+Click on the `Users` endpoint. Click on `POST /v3/Users` to expand that endpoint. The HTML form will expand
+to show more options for calling this endpoint. See the following illustration and descripiton.
 
 ![POST Users](img/post-users.png)
 
@@ -167,8 +162,7 @@ bolded property names for those that are required. This information is mostly
 accurate, but some endpoints have conditional required fields which is
 difficult to represent in OpenAPI 2.0.
 
-Compose a body for your new user. The picture above says "string" for the user
-name which is a terrible name for a user. Use something similar to the body
+Click the `Example Value` to compose a body for your new user. The `entity` box is populated. The picture above says "string" for the `UserName` which is a terrible name for a user. Use something similar to the body
 below which will give the new user the admin rights necessary to do whatever
 future tutorials require.
 
@@ -227,7 +221,7 @@ show more options for calling this endpoint.
 
 You will notice that there are a lot of new parameters for this endpoint. Most
 of them are query parameters and they show up for many of the `GET` endpoints
-in the Safeguard API.
+in the SPP API.
 
 The following is a breakdown for using these query parameters:
 
@@ -314,4 +308,4 @@ appliance admin.
 
 
 
-NEXT: [SPP 3 -- Using Postman to call the Safeguard API](../spp3-postman)
+NEXT: [SPP 3 -- Using Postman to call the SPP API](../spp3-postman)
