@@ -5,30 +5,33 @@ appliance to provide protection for passwords and private keys. In addition to
 storing these credentials, SPP automates the management of the credentials in
 the environment, which helps regulatory compliance and security. To access
 passwords, private keys, and sessions, SPP provides a role-bashed policy model
-and access request workflow. SPP maintains and indelible audit log of all
+and access request workflow. SPP maintains an indelible audit log of all
 details of credential access, credential management, and configuration changes.
 
 Because it is a secure, hardened appliance, all of the functionality of SPP is
-exposed only through the Safeguard API. There is no direct console access.
+exposed only through the SPP API. There is no direct console access.
 There are no backdoors. There no special internal interfaces that only One
 Identity can use. All of the functionality that you see in the SPP UI is
-presented based on interactions with the Safeguard API.
+presented based on interactions with the SPP API.
 
 ![API Clients](img/api-clients.png)
 
-This means that there is nothing that you cannot do with the Safeguard API
+This means that there is nothing that you cannot do with the SPP API
 that you can do in the SPP UI.
 
 ## Clusters
 
 SPP is delivered as an appliance, which can cause people to think that the
-appliance is the product. In reality, SPP is almost never deployed as a single
+appliance is the complete product. In reality, SPP is almost never deployed as a single
 appliance. In fact, One Identity very much recommends that you only deploy SPP
 as a cluster of three or five appliances. The reason for this is that the SPP
-application is actually served as a cluster. All of the appliances is in the
+application is actually best served as a cluster for maximum efficiency and security.
+All of the appliances is in the
 cluster have all of the data. The most critical services such as access request
 workflow, credential management, and auditing are provided from every appliance
-in the cluster. There is a primary appliance that is used for making
+in the cluster. For example, every appliance in the cluster is aware of password
+releases. This is known as active/active clustering rather
+than active/passive clustering. There is a primary appliance that is used for making
 configuration changes, but any appliance in the cluster can be modified to
 assume the primary role.
 
@@ -42,13 +45,24 @@ SPP clusters are also built to work with Safeguard for Privileged Sessions
 (SPS) appliances and clusters. SPP and SPS clusters can be joined together to
 allow SPP access request workflow and credentials to be used with SPS sessions.
 
+When joined, the SPP primary appliance is connected to the SPS configuration
+master appliance. All nodes in SPP and SPS know about each other. The passwords
+are only stored on SPP. When a session is started on SPS, the password is securely
+transmitted from SPP without revealing it to the end user.
+
 ![Cluster Join](img/cluster-join.png)
 
-SPP and SPS actually do not share a single Safeguard API. Each product has a
-separate Safeguard API. They differ in authentication, versioning scheme, and
-API basic endpoint design. In the future SPP and SPS will share a single
-authentication strategy. There will always be differences between SPP and SPS
-Safeguard APIs, but over time they will become more alike.
+SPP and SPS actually do not share a single API. Each product has a
+separate API. They differ in authentication, versioning scheme, and
+basic API endpoint design. In the future SPP and SPS will share a single
+authentication strategy. There will always be differences between SPP and SPS APIs, but over time they will become more alike.
+
+For more information on clusters, see `Disaster recovery and clusters`: 
+[https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/99#TOPIC-1269467](https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/99#TOPIC-1269467)
+
+For more information on the join, see `Appendix C: SPP and SPS join guidance`: 
+[https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/128#TOPIC-1269585](https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/128#TOPIC-1269585)
+
 
 ## Virtual Appliances
 
@@ -64,7 +78,12 @@ access to the virtual disks and virtual memory of a running SPP virtual
 appliance. However, there are some best practices for securing an SPP virtual
 appliance cluster.
 
+For details, see Using the virtual appliance and web management console:
+[https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/4#TOPIC-1269087](https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/4#TOPIC-1269087)
+
 ![Virtual](img/virtual.png)
+
+In the future, virtual appliances will be available in Azure and AWS.
 
 ## Authenticating to the Safeguard API
 
@@ -77,21 +96,21 @@ Active Directory users to federated IDPs and FIDO2. It supports RADIUS,
 smart cards, and also 2FA via multiple mechanisms.
 
 Authenticating to use the Safeguard API is a two step process. The initial
-authentication is against the rSTS which results in an rSTS token (JWT). This
-rSTS token is then exchanged for a Safeguard API token.
+authentication is against the rSTS which results in an rSTS token (JSON Web Token or JWT). This
+rSTS token is then exchanged for a SPP API token to access SPP.
 
 ![SPP Auth Process](img/spp-auth-process.png)
 
-rSTS authentication uses OAuth 2.0. Our rSTS supports several different grant
+Administrators do not have to be experts in rSTS. SPP rSTS authentication uses OAuth 2.0. Our rSTS supports several different grant
 types. **Authorization code grant** is used by the SPP desktop UI, the `-Gui`
 parameter in safeguard-ps, and SafeguardDotNet.GuiLogin. **Implicit grant** is
 used by the SPP web UI. **Resource owners grant** is used by most of our open
 source projects such as safeguard-ps, safeguard-bash, SafeguardJava, and
 SafeguardDotNet.
 
-rSTS tokens and Safeguard API tokens are JWT bearer tokens. These tokens are
+rSTS tokens and SPP API tokens are JWT bearer tokens. These tokens are
 embedded in the HTTP Authorization header of the HTTP requests that are sent
-to the Safeguard API.
+to the SPP API.
 
 ```
 Authorization: Bearer <token>
@@ -100,17 +119,17 @@ Authorization: Bearer <token>
 ## Calling Safeguard API Services
 
 The Safeguard API is a REST-based API. Safeguard API endpoints are called using
-HTTP operators and JSON (or XML) requests and responses. The Safeguard API is
-documented using Swagger. You may use Swagger UI to call the API directly or to
+HTTP operators and JSON (or XML) requests and responses. The SPP API is
+documented using Swagger. You may use the Swagger UI to call the API directly or to
 read the documentation about URLs, parameters, and payloads.
 
 To access the Swagger UI use a browser to navigate to:
 `https://<address>/service/<service>/swagger`
 
-- `<address>` = Safeguard network address
-- `<service>` = Safeguard service to use
+- `<address>` = SPP network address
+- `<service>` = SPP service to use
 
-The Safeguard API is made up of multiple services: core, appliance, notification,
+The SPP API is made up of multiple services: core, appliance, notification,
 event, and a2a.
 
 |Service|Description|
@@ -132,7 +151,7 @@ resources that are identified by the path in the URL. The HTTP methods, `GET`,
   - `DELETE` = `delete`
 
 The exception to this rule is that the HTTP `POST` method is overloaded in
-several places in the Safeguard API to perform a `POST` action, when that
+several places in the SPP API to perform a `POST` action, when that
 particular action does not fit neatly into CRUD semantics. In these cases the
 path to that endpoint will end in a verb rather than a noun.
 
@@ -140,12 +159,12 @@ For example, `POST` `service/core/v3/AccessRequests/{id}/Deny` is a `POST`
 action that denies an access request, whereas `POST`
 `service/core/v3/AccessRequests` is a `create` action.
 
-The Safeguard API is protected by TLS. SPP ships with a built-in self-signed
+The SPP API is protected by TLS. SPP ships with a built-in self-signed
 certificate that should be replaced with a legitimate TLS certificate that is
 trusted in your organization.
 
-Given a Safeguard API token, you can call the Safeguard API using any HTTP
-client. An example using cURL where the `$tok` contains a Safeguard API token
+With an SPP API token, you can call the SPP API using any HTTP
+client. An example using cURL where the `$tok` contains an SPP API token
 and `-k` is specified to avoid complaints about a self-signed certificate:
 
 ```Bash
@@ -176,10 +195,10 @@ The resulting HTTP request looks like this:
 03e2:
 ```
 
-Safeguard API uses URL versioning. The current version is "v3". The previous
+The SPP API uses URL versioning. The current version is "v3". The previous
 version "v2" is also supported, and in many cases, the endpoints are
 equivalent. However, it is recommended that you call the most recent version
-of the Safeguard API where possible. The good news is that since SPP maintains
+of the SPP API where possible. The good news is that since SPP maintains
 backwards compatibility of the API where possible, the investments that you
 make now in automation will continue to work in the future. Only when it is
 impossible to make a previous version of an endpoint work does the SPP team
@@ -217,12 +236,12 @@ curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: appl
 0000: {"PrimaryAuthenticationProviderId":-1,"UserName":"Doogie"}
 ```
 
-While calling the Safeguard API from cURL works, the open source projects from
+Although calling the SPP API from cURL works, the open source projects from
 the next few tutorials make it much easier--especially the obtaining the
-initial Safeguard API token. The exact cURL commands that could be used to
-obtain a Safeguard API token on your own are beyond the scope of this tutorial.
+initial SPP API token. The exact cURL commands that could be used to
+obtain a SPP API token on your own are beyond the scope of this tutorial.
 
 *The source code of the [safeguard-bash](https://github.com/oneidentity/safeguard-bash)
-open source project shows how to get a Safeguard API token using cURL.*
+open source project shows how to get a SPP API token using cURL.*
 
-NEXT: [SPP 2 -- Using Swagger UI to call the Safeguard API](../spp2-swagger)
+NEXT: [SPP 2 -- Using Swagger UI to call the SPP API](../spp2-swagger)

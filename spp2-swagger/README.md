@@ -1,13 +1,12 @@
-# SPP 2 -- Using Swagger UI to call the Safeguard API
+# SPP 2 -- Using Swagger UI to call the SPP API
 
 Given the information from the [introductory tutorial](../spp1-introduction),
-you are now ready to learn to call the Safeguard API using the built-in Swagger
+you are now ready to learn to call the SPP API using the built-in Swagger
 UI. Swagger is based on the
 [OpenAPI specification](https://swagger.io/docs/specification/about/) which
-provides a way to document an entire API like the Safeguard API in a single
-file. SPP code that serves the Safeguard API is instrumented in such a way that
-it generates an OpenAPI file during build. This OpenAPI file may be downloaded
-from any of the Safeguard API services: core, appliance, notification, event,
+provides a way to document an entire API like the SPP API in a single
+file. SPP code that serves the SPP API generates an OpenAPI file during build. This OpenAPI file may be downloaded
+from any of the SPP API services: core, appliance, notification, event,
 and a2a.
 
 |Service|Description|
@@ -23,19 +22,21 @@ service is not really useful as that endpoint just provides for SignalR
 connectivity.
 
 Swagger UI is generated along with the Swagger OpenAPI file to visualize and
-interact with the Safeguard API in place without having to implement a client.
+interact with the SPP API in place without having to implement a client.
 
 ## Exercises
 
 START HERE: [Hands-on Lab](swagger-hol.md)
 
-1. Find the Swagger OpenAPI file
-2. Find Swagger UI
-3. Calling the notification service -- anonymous GET
-4. Authenticate to Safeguard using Swagger UI
-5. Calling the core service to create a user
-6. Calling the core service to set the user password
-7. Using query parameters
-8. Maintenance operations available on the appliance service
+In this lab you will perform the following:
 
-NEXT: [SPP 3 -- Using Postman to call the Safeguard API](../spp3-postman)
+1. Find the Swagger OpenAPI file.
+2. Find Swagger UI.
+3. Calling the notification service -- anonymous GET.
+4. Authenticate to Safeguard using Swagger UI.
+5. Calling the core service to create a user.
+6. Calling the core service to set the user password.
+7. Using query parameters.
+8. Maintenance operations available on the appliance service.
+
+NEXT: [SPP 3 -- Using Postman to call the SPP API](../spp3-postman)
