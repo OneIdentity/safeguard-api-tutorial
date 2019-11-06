@@ -32,11 +32,11 @@ In this lab you will perform the following:
 
 1. Find the Swagger OpenAPI file.
 2. Find Swagger UI.
-3. Calling the notification service -- anonymous GET.
+3. Call the notification service -- anonymous GET.
 4. Authenticate to Safeguard using Swagger UI.
-5. Calling the core service to create a user.
-6. Calling the core service to set the user password.
-7. Using query parameters.
-8. Maintenance operations available on the appliance service.
+5. Call the core service to create a user.
+6. Call the core service to set the user password.
+7. Use query parameters.
+8. Perform maintenance operations available on the appliance service.
 
 NEXT: [SPP 3 -- Using Postman to call the SPP API](../spp3-postman)

@@ -196,12 +196,12 @@ You will notice that there is a new parameter called `id` with the path type.
 You can see from the URL of the endpoint how this `id` will be filled into the
 HTTP request.
 
-To set a password for your new user, you need to type the "Id" from the
+To set a password for your new user, type the "Id" from the
 previous step into the `Value` of the `id` parameter. In my case this is 13.
 
 Then, you need to set the password. Notice that the `Parameter content type` is
 set to `application/json`. This means that I need to quote the string that I
-put into the body.
+put into the body as shown here: "BillyBob123". See the following illustration and description..
 
 ![Set Password](img/set-password.png)
 
@@ -211,12 +211,12 @@ Set your password to the quoted JSON string you want, then click the
 This time you will get a 204 `Response Code` indicating success, but you will
 not get a `Response Body`.
 
-Now you can go back to the `Authorize` button at the top of the Swagger UI and
-reauthenticate as your new user.
+Now, click the `Authorize` button at the top of the Swagger UI and
+reauthenticate as your new user. In my case this is user name "billybob" and password "BillyBob123".
 
 ## 7. Using query parameters
 
-Click on `GET /v3/Users` to expand that endpoint. The HTML form will expand to
+Scroll to `Users` and click on `GET /v3/Users` to expand that endpoint. The HTML form will expand to
 show more options for calling this endpoint.
 
 You will notice that there are a lot of new parameters for this endpoint. Most
@@ -233,7 +233,7 @@ The following is a breakdown for using these query parameters:
 | Paging			| Example															| Notes 								|
 | -----				| -----																| ----- 								|
 | `count`			| `GET /Asset?count=true`				 							| 	 									|
-| `page` & `limit`	| `GET /DirectoryAccounts?page=3&limit=100`							| `0` is the first page					|
+| `page` and `limit`	| `GET /DirectoryAccounts?page=3&limit=100`							| `0` is the first page					|
 
 
 | `filter`			| Example															| Notes 								|
@@ -283,18 +283,18 @@ object. This can be valuable for two reasons:
 
 Let's move on to the `appliance` service. Change the URL in your browser to:
 
-`https://<address>/service/<service>/swagger`
+`https://<address>/service/appliance/swagger`
 
-But, replace `<service>` with `appliance`. Your browser will be automatically
-redirected to:
+Your browser will be automatically redirected to:
 
-`https://<address>/service/<service>/swagger/ui/index`
+`https://<address>/service/appliance/swagger/ui/index`
 
-Go try to click on the `Try it out!` button of the
+Click on `ApplianceStatus` to expand that endpoint to reveal the endpoints that are available beneath it. 
+Click on the `POST /v3/ApplianceStatus/Reboot` endpoint and enter test in the reason parameter value field. Go try to click on the `Try it out!` button of the
 `POST /v3/ApplianceStatus/Reboot` endpoint. You will find that you are met with
 a 401 unauthorized error.
 
-Every time you switch between the Swagger UI pages you will need to
+This illustrates that every time you switch between the Swagger UI pages you will need to
 reauthenticate. If you plan on using Swagger UI often you will want to leave it
 open in multiple tabs in your browser. Reauthenticating requires reloading the
 Swagger UI, which can be time consuming.
