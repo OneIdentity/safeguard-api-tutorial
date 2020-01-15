@@ -4,7 +4,7 @@
 
 First, you need to download [Postman](https://www.getpostman.com/downloads/).
 
-Click on the Download button from the menu and select 64-bit.
+Click on the `Download` button from the menu and select 64-bit.
 
 ![Postman Download](img/postman-download.png)
 
@@ -26,18 +26,18 @@ account so that your Postman Collections will be synchronized across devices.
 
 ## 2. Make a simple unauthenticated request
 
-After the login screen, you will be shown the Create New screen. The first
+After the login screen, you will be shown the Create New screen. (If you do not see this screen, click the `+ New` button in the upper left corner of the page).  The first
 thing we are going to do is make a simple request to SPP.
 
 Click on the `Request` button under `BUILDING BLOCKS`.
 
 ![New Request](img/new-request.png)
 
-Give the new request a name: `GET Appliance Health`.
+Give the new request this name: `GET Appliance Health`.
 
-Give the new request a description: `Get Safeguard appliance health from appliance service`.
+Give the new request this description: `Get Safeguard appliance health from appliance service`.
 
-Click on the `Create Collection` link to create a new Postman Collection.
+Scroll down, as needed, and click on the `+ Create Collection` link to create a new Postman Collection.
 
 Call the new Postman Collection `Safeguard`.
 
@@ -47,21 +47,20 @@ Click the check mark to save the `Safeguard` collection.
 
 Click on `Save to Safeguard` to finish creating your new request.
 
-Then, you need to fill out the request with a URL: `https://<address>/service/appliance/v3/ApplianceStatus/Health`
-but replacing `<address>` with your appliance network address or DNS name.
-
-Before you click the `Send` button to send the request, you probably need to
-disable SSL verification. If you do, go to `File -> Settings` and turn off the
+You will probably need to
+disable SSL verification. If you do, go to the drop-down menu `File -> Settings` and turn off the
 toggle next to `SSL certificate verification`.
 
 ![Disable SSL](img/disable-ssl.png)
 
-Then, go back and click on the `Send` button.
+Then, you need to fill out the request with a URL: `https://<address>/service/appliance/v3/ApplianceStatus/Health`
+but replacing `<address>` with your appliance network address or DNS name.
+
+Then, go back and click on the `Send` button (see the following illustration).
 
 ![Send Request](img/send-request.png)
 
-This should result in a successful query of the appliance health. You will
-will notice that you get pretty-printed JSON, and you can collapse elements of
+This should result in a successful query of the appliance health. You will notice that you get pretty-printed JSON, and you can collapse elements of
 it for better visibility in analyzing the response.
 
 ## 3. Import directly from Safeguard OpenAPI file
@@ -71,7 +70,7 @@ Postman Collections a little better. In the Postman interface, open requests
 show up in tabs across the top of the UI. You can edit and save open requests
 back to your collection.
 
-Click on the `Save` button to save the `GET Appliance Health` request that you
+Click on the `Save` button drop down then `Save As`.  Click the `Save to Safeguard` button to save the `GET Appliance Health` request that you
 created in the previous step.
 
 In the pane on the left there are two tabbed views: `History` and
@@ -81,35 +80,36 @@ a request from there into a new tab even after you have modified it in your
 current tab.
 
 Switching over to the `Collections` tab, you should be able to see the one
-request hat you have saved thus far: `GET Appliance Health` inside the
-`Safeguard` collection.
+request that you have saved thus far.  Click the `Safeguard` collection to view `GET Appliance Health` inside the collection.
 
-When looking at the an individual request tab, lower down on the form there is
+When looking at an individual request tab in the right pane, lower down on the form there is
 an additional row of tabs that allow you to set different attributes of the
-request. This is where you would go to set parameters, fill in the request
+request. This is where you set parameters, fill in the request
 body, or modify request headers.
 
 ![Request UI](img/request-ui.png)
 
-With the method that we showed in step 2 of this lab, you have to create each
-individual request that you want to call. There is actually an easier way to
+With the method that we showed in step 2 of this lab, you must create each
+individual request that you want to call. There is an easier way to
 do this, but the easier method has its own drawbacks.
 
-You can actually import all of the requests from an entire service in one shot
+You can import all the requests from an entire service in one shot
 by downloading the OpenAPI file and importing it into Postman.
 
-First, you need to open a browser and navigate to:
+First, you need to open a browser and navigate to the following for the OpenAPI data of a given service in the Safeguard API:
 
 `https://<address>/service/<service>/swagger/docs/v3`
 
-To get the OpenAPI file for a given service. Let's choose the `core` service,
+Let's choose the `core` service,
 because it is the biggest and has the most examples of different types of
-Safeguard API endpoints.
+Safeguard API endpoints.  Enter the following using your Safeguard network address:
+
+`https://<address>/service/core/swagger/docs/v3`
 
 When the OpenAPI file is loaded in the browser as a giant document, you should
-be able to right-click in Chrome to `Save as` or in Firefox you can click the
+be able to right-click in Chrome then `Save as` or, in Firefox, you can click the
 `Save` button in the upper left of the view.  Once you have the file saved as
-`v3.json`. You will be able to import it into Postman.
+`v3.json`. You will be able to import it into Postman.  Go back to Postman and click the `Import` button.
 
 ![Import Button](img/import-button.png)
 
@@ -117,10 +117,10 @@ When the Import form pops up click on the `Choose Files` button.
 
 Select the `v3.json` file that you downloaded.
 
-There is kind of a weird user experience after you select the `v3.json` file
-where it doesn't seem like the dialog is responding, but then it will close and
-send you back to the main Postman view. After a few seconds a little pop up
-will appear in the lower right corner saying that the file was imported.
+If you see an `IMPORT` screen, select `Generate a Postman Collection`.
+
+After you select the `v3.json` file, it doesn't seem like the dialog is responding, but then it will close and
+send you back to the main Postman view. After a few seconds a pop up appears in the lower right corner saying that the file was imported.
 
 If you go back to the `Collections` tab in the left pane and expand the `v3`
 node, you will see that the entire `core` service has been imported into
@@ -128,35 +128,39 @@ Postman.
 
 ![Imported Core](img/imported-core.png)
 
-Take a moment to to browser through all of the endpoints that have been loaded
+Take a moment to browser through all the endpoints that have been loaded
 into Postman. This is the entire content of what you saw in the Swagger UI.
 There are a couple of issues with using these endpoints directly, but they can
 serve as a very good starting point with a little modification.
 
+Consider the issues below.  You do not need to perform these actions now.  Just become familiar with the issues and the location to change the settings.
+
 - For some reason Postman imports these with all of the query parameters turned
   on and filled out with bogus sample values. You will need to turn these off
-  by unchecking the boxes.
+  by unchecking the boxes.  See the example that follows.
 - The body is assumed to be application/x-www-form-urlencoded which means the
   `Content-type` header needs to be changed to application/json.
 - On the body tab the attributes that need to be encoded as JSON are there, but
-  in order to actually send them you need to switch to `raw` and change the
+  in order to send them you need to switch to select the `raw` option and change the
   `Text` drop down to `JSON`. You will need to craft the JSON yourself.
-- Most Safeguard API endpoints actually require authorization so you will need
+- Most Safeguard API endpoints require authorization so you will need
   to learn how to create a Safeguard API token and save it in a variable. You
-  will learn this later on in this lab.
+  will learn this later in this lab.
 
 Once you have made changes to a request you can save it back to the imported
 collection or you can use `Save as` to save it to a different collection. You
-will do this later on in this lab to add to the `Safeguard` collection we
+will do this later in this lab to add to the `Safeguard` collection we
 created earlier.
 
 Another thing you will notice about these imported requests is that the URL
 does not contain an appliance IP address or DNS name. Instead it contains the
-string `{{baseUrl}}`. This is a variable. Using such a variable is a really
-good idea because it allows you to switch the context of the entire collection
-to call a different appliance just by changing one value.
+string `{{baseUrl}}` as shown below. This is a variable. 
 
 ![Edit Collection](img/edit-collection.png)
+
+Using such a variable is a really
+good idea because it allows you to switch the context of the entire collection
+to call a different appliance just by changing one value.
 
 To see the `baseUrl` variable, select your `v3` collection in the left pane and
 click on the three dots `...`. Select the `Edit` option. On the next form click
@@ -172,15 +176,15 @@ address or DNS name of the target appliance.
 
 ![Server Variable](img/server-variable.png)
 
-Before moving, you should rename your `v3` collection to `core`. You can do
+Before moving on in this tutorial, rename your `v3` collection to `core`. You can do
 this on the `EDIT COLLECTION` view, or by selecting it in the left pane of the
-main page, clicking on the three dots `...`, and selecting the `Rename` option.
+main page, clicking on the three dots `...`, and selecting the `Rename` option.  The `core` collection will be used later.
 
 ## 4. Import a starter collection for authentication
 
 In order to use the Safeguard API from Postman you need to be able to
 authenticate. Authentication is a multi-step process with the Safeguard API, so
-it isn't possible to do that by creating a single request. In order for
+it isn't possible to do that by creating a single request. For
 multiple requests to work together, they need to be part of a collection and
 they need to be able to pass information to one another via the environment.
 
@@ -188,17 +192,22 @@ To set this up easily, you need to download and import these two files:
 - [Authorize Collection](data/Authorize.postman_collection.json)
 - [Safeguard Environment](data/Safeguard.postman_environment.json)
 
-To download, click on the links above, and then right-click the `Raw` button
+To download, click each of the links above, and then right-click the `Raw` button
 and select `Save link as` to get the actual JSON file.
 
-First, you should upload the environment file.
+These files should be saved:
+- Authorize.postman_collection.json 
+- Safeguard.postman_environment.json 
+
+
+First, upload the environment file.
 
 Click the `Import` button in the main Postman interface.
 
 Click the `Choose Files` button and select the
 `Safeguard.postman_environment.json` file that you downloaded.
 
-You will see a pop up in the the bottom right corner that it was imported.
+You will see a pop up in the bottom right corner that it was imported.
 
 On the upper right side of the Postman interface, select the `No Environment`
 drop down and change it to `Safeguard Environment`.
@@ -210,13 +219,13 @@ to modify the environment values.
 
 ![Edit Environment](img/edit-environment.png)
 
-You will want to set the `CURRENT VALUE` for `appliance`, `user_name`, and
+Scroll as needed to set the `CURRENT VALUE` for `appliance`, `user_name`, and
 `user_password` to the correct values for your SPP.
 
 ![Update Environment](img/update-environment.png)
 
 Click the `Update` button and then press the `X` on the `MANAGE ENVIRONMENTS`
-window.
+dialog to close the dialog.
 
 Now, import the collection file.
 
@@ -225,8 +234,8 @@ Click the `Import` button in the main Postman interface.
 Click the `Choose Files` button and select the
 `Authorize.postman_collection.json` file that you downloaded.
 
-You will see a pop up in the the bottom right corner that it was imported, and
-you will notice a new collection in the left pane.
+You will see a pop up in the bottom right corner that it was imported, and
+you will notice a the `Authorize`collection in the left pane.
 
 Click on the `Authorize` collection to show the three POST requests inside. In
 order to authenticate you need to run all three of the requests in succession.
@@ -239,24 +248,23 @@ As the collection runs, it will populate the other variables in the environment
 with values. When the entire collection run is successful, you will have a
 value for `safeguard_token`.
 
-To run the collection click the play button next to the `Authorize` collection.
+To run the collection click the `▶` play button next to the `Authorize` collection.
 
 Then, click the `Run` button.
 
 This will load the `Collection Runner` form.
 
-Make sure that the `Safeguard Environment` environment is selected.
+Make sure that `Environment` is set to the `Safeguard Environment` environment is selected.
 
-Make sure that the `Keep variable values` check box is checked.
+Make sure that the `Keep variable values` check box is checked. (See the illustration below).
 
 Then, click the `Run Authorize` button.
 
 ![Run Collection](img/run-collection.png)
 
-The `Run Results` tab in the dialog will show a failure if there is a failure,
-but it doesn't show much valuable information on a success.
+The `Run Results` tab in the dialog will show information for `PASSED` and `FAILED`.
 
-Close the `Collection Runner` dialog.
+Click the `X` to close the `Collection Runner` dialog.
 
 Click on the eye ball icon next to the `Safeguard Environment` drop down.
 
@@ -265,7 +273,7 @@ Click on the eye ball icon next to the `Safeguard Environment` drop down.
 You should see a value for `safeguard_token`.
 
 Take a minute to look at the `Authorize` collection. Click on the `...` button
-and go to edit.  You will see that there are some collection variables set for
+and click `Edit`.  You will see that there are some collection variables set for
 `rstsUrl` and `coreUrl` that are generated based on the value of `appliance`
 from the environment.
 
@@ -277,31 +285,31 @@ Now that `safeguard_token` is set in the environment we can use it in other
 collections.
 
 To make this useful in your `core` collection:
-- Edit the collection
-- Click on the `Authorization` tab
-- Set the type to `Bearer Token`
-- Set the `Token` value to `{{safeguard_token}}`
-- Then, click `Update`
+1. Edit the collection.
+2. Click on the `Authorization` tab.
+3. Set the type to `Bearer Token`.
+4. Set the `Token` value to `{{safeguard_token}}`.
+5. Click `Update`.
 
 To use this in one of the requests under `core`:
-- Pick any GET request (v3/Me for example)
-- Uncheck all of the query parameters on the `Params` tab
-- On the `Authorization` tab change the drop down to `Inherit auth from parent`
-- Then click the `Send` button
+1. Pick any GET request (v3/Me for example)
+2. Uncheck all the query parameters on the `Params` tab
+3. On the `Authorization` tab change the drop down to `Inherit auth from parent`
+4. Click the `Send` button
 
-You can save the request when you are done.
+Click the `Save` button to save the request when you are done.
 
 PUT and POST requests are a little more difficult, because you have to build
 the JSON body that will be sent in the request. Most of the properties listed
 are not required. You can use Swagger UI or the information in the
-application/x-www-form-urlencoded version to determine which properties to
+`application/x-www-form-urlencoded` version to determine which properties to
 send.
 
 Each time you customize a request to make it work, be sure to save it for
 future use.
 
 You may want to turn on
-`File -> Settings -> Always ask when closing unsaved tabs`.
+`File -> Settings -> REQUEST, Always ask when closing unsaved tabs`.
 
 Another thing you may want to do is go back into your `core` collection and set
 it up to use the `appliance` variable rather than the `server` collection
@@ -310,18 +318,18 @@ variable you created earlier.
 ## 5. Running a simple POST
 
 First, let's use Postman to create a new asset partition in SPP. To do this
-you need to go under your `core` collection and find `POST Asset Partitions`.
+you need to go under your `core` collection and click on `POST Adds a new AssetPartition`.
 
 ![Add Partition](img/add-partition.png)
 
-Select the `Body` tab and change it to `raw`. Change the `Text` drop down to
+In the right pane, select the `Body` tab and select the `raw` option. Change the `Text` drop down to
 `JSON`.
 
-Make sure to change `Authorization` tab to `Inherit auth from parent`.
+On the `Authorization` tab, make sure the `TYPE` is `Inherit auth from parent`.
 
-Make sure to change the `Content-Type` in `Headers` to `application/json`.
+On the `Headers` tab, make sure the `Content-Type` is `application/json`.
 
-Add the following body:
+Click the `Body` tab and add the following body:
 
 ```JSON
 {
@@ -354,7 +362,7 @@ the `Edit` option.
 Go to the `Variables` tab and add a variable called `coreUrl`.
 
 Set its `INITIAL VALUE` to `https://{{appliance}}/service/core` and that will
-propagated to the `CURRENT VALUE` as well.
+propagate to the `CURRENT VALUE` as well.
 
 On the `Authorization` tab set the `TYPE` to `Bearer Token` and set `Token` to
 `{{safeguard_token}}`.
@@ -364,7 +372,7 @@ Click the `Update` button.
 Rename the `Safeguard` collection to `New Local User` by clicking on the `...`
 button next the collection and selecting `Rename`.
 
-Click on the `...` button again and select `Add Request`.
+Click on the `...` button and select `Add Request`.
 
 Call the new request `Create User Entity` and give it the description
 `Create a new user object in SPP`.
@@ -380,7 +388,7 @@ The `Authorization` tab should already be set to `Inherit auth from parent`.
 
 Make sure to change the `Content-Type` in `Headers` to `application/json`.
 
-On the `Body` tab set it to `raw` and the drop down to `JSON`.
+On the `Body` tab set the `raw` option and change the drop down from `Text` to `JSON`.
 
 Add the following body:
 
@@ -455,7 +463,7 @@ If something has gone wrong you can click on the name of the request to see
 exactly what was actually sent to the appliance, e.g. URL, headers, body, etc.
 
 This script could be refactored to take the fields for the new user and the new
-password from variables in the collection or you can modify the the body each
+password from variables in the collection or you can modify the body each
 time you run the collection.
 
 
