@@ -101,16 +101,84 @@ rSTS token is then exchanged for a SPP API token to access SPP.
 
 ![SPP Auth Process](img/spp-auth-process.png)
 
-Administrators do not have to be experts in rSTS. SPP rSTS authentication uses OAuth 2.0. Our rSTS supports several different grant
+Administrators do not have to be experts in rSTS. SPP rSTS authentication uses 
+OAuth 2.0. Our rSTS supports several different grant
 types. **Authorization code grant** is used by the SPP desktop UI, the `-Gui`
 parameter in safeguard-ps, and SafeguardDotNet.GuiLogin. **Implicit grant** is
 used by the SPP web UI. **Resource owners grant** is used by most of our open
 source projects such as safeguard-ps, safeguard-bash, SafeguardJava, and
 SafeguardDotNet.
 
-rSTS tokens and SPP API tokens are JWT bearer tokens. These tokens are
-embedded in the HTTP Authorization header of the HTTP requests that are sent
-to the SPP API.
+An example of calling the rSTS:
+
+```Bash
+curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' 'https://<your server>/RSTS/oauth2/token' -d '{ "grant_type": "password", "username": "Admin", "password": "Admin123", "scope": "rsts:sts:primaryproviderid:local" }'
+```
+
+Finding the value for the `scope` parameter can be difficult for Active Directory
+users, but there are well-known values for built-in identity providers:
+
+Local: `rsts:sts:primaryproviderid:local`
+Certificate: `rsts:sts:primaryproviderid:certificate`
+
+The SDKs and open source projects take care of detecting Active Directory `scope`
+values.
+
+The resulting HTTP request looks something like this:
+
+```Text
+0000: POST /RSTS/oauth2/token HTTP/2
+001e: Host: <your server>
+0033: User-Agent: curl/7.58.0
+004c: Content-Type: application/json
+006c: Accept: application/json
+0086:
+
+0000: { "grant_type": "password", "username": "Admin", "password": "Ad
+0040: min123", "scope": "rsts:sts:primaryproviderid:local" }
+```
+
+An example of exchanging the rSTS token for the SPP API token:
+
+```Bash
+curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' 'https://<your server>/service/core/v3/Token/LoginResponse' -d '{ "StsAccessToken": "<rsts token>" }'
+```
+
+The resulting HTTP request looks something like this:
+
+```Text
+0000: POST /service/core/v3/Token/LoginResponse HTTP/2
+0032: Host: <your server>
+0047: User-Agent: curl/7.58.0
+0060: Content-Type: application/json
+0080: Accept: application/json
+009a:
+
+0000: { "StsAccessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI
+0040: 6IkQ5VFlzdE9YSGp3WWc1WkJfQ3hxR20tOEJENCJ9.eyJpc3MiOiJodHRwczovLz
+0080: BGRDREOEIyRDM5NzFFM0MxODgzOTY0MUZDMkM2QTFBNkZCQzA0M0UiLCJuYmYiOj
+00c0: E1Njg3NjAxMTMsImV4cCI6MTU2ODc2MDQxMywiYXV0aG1ldGhvZCI6ImxvY2FsOn
+0100: B3ZCIsImF1dGhfdGltZSI6IjIwMTktMDktMTdUMjI6NDE6NTMuNDE3NjQ3M1oiLC
+0140: JodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL2FjY2Vzc2NvbnRyb2xzZXJ2aW
+0180: NlLzIwMTAvMDcvY2xhaW1zL2lkZW50aXR5cHJvdmlkZXIiOiJodHRwczovLzBGRD
+01c0: REOEIyRDM5NzFFM0MxODgzOTY0MUZDMkM2QTFBNkZCQzA0M0UiLCJ1cm46cnN0cy
+0200: 9qdGkiOiJmOTU1OTBlMjZmNjY0NDVkOThiNGU3NDk2OTU1ZThjNSIsIm5hbWVpZC
+0240: I6ImFkbWluIiwidXBuIjoiYWRtaW4iLCJlbWFpbCI6IiIsInVuaXF1ZV9uYW1lIj
+0280: oiQm9vdHN0cmFwIEFkbWluaXN0cmF0b3IiLCJ1cm46cnN0cy9kYXlzVW50aWxQYX
+02c0: Nzd29yZEV4cGlyZXMiOiIxMDY3NTE5OS4xMTY3MzAxIiwicnN0czpzdHM6Y2xhaW
+0300: 1zOnVzZXI6dXNlcklkIjoiLTIiLCJzdWIiOiJhZG1pbiIsImF6cCI6IjAwMDAwMD
+0340: AwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInJzdHM6c3RzOmNsYWltcz
+0380: pzY29wZSI6InJzdHM6c3RzOnByaW1hcnlwcm92aWRlcmlkOmxvY2FsOnB3ZCIsIn
+03c0: JzdHM6c3RzOmNsYWltczpzbnRubCI6IjAifQ.iyuD4mNElMq8WsnMpnM7pInXzG4
+0400: 46dhS2zL9Ylzer58GSlXPwxJVJDrAP5mGzND_ge-52kBbGS6Z2TYe1ji356AgmF2
+0440: PV-U1JH54KD7pAQq7E87r7qEsx1qHBKnLEiPZKssJrNnY587Fxx9AVkf5t6OQyFo
+0480: HA5eE8nd3oerPahzhshDew7sPekrbvT8387bO5grcLo6h9z2vffNDK05r13rM7Ya
+04c0: -gDVAEILhBtHm3dJ_dfqX16S8F4QEhopqOahE3XOXxU0laWO2Dl7nJvZRrkn_MjN
+0500: BRhz5MpiIX1Ox6kv0CNGuPKBui5HT2sDikg-QS1dHYRw1YrqeP_CWeIILcg" }
+```
+
+SPP API tokens are JWT bearer tokens. These tokens are embedded in the HTTP
+Authorization header of the HTTP requests that are sent to the SPP API.
 
 ```
 Authorization: Bearer <token>
@@ -168,7 +236,7 @@ client. An example using cURL where the `$tok` contains an SPP API token
 and `-k` is specified to avoid complaints about a self-signed certificate:
 
 ```Bash
-curl -k -X GET --header 'Accept: application/json' --header "Authorization: Bearer $tok" 'https://sps1.petrsnd.org/service/core/v3/Users'
+curl -k -X GET --header 'Accept: application/json' --header "Authorization: Bearer $tok" 'https://<your server>/service/core/v3/Users'
 ```
 
 The resulting HTTP request looks like this:
@@ -207,7 +275,7 @@ deprecate an existing API.
 The following is another example that uses POST and sends a body:
 
 ```Bash
-curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header "Authorization: Bearer $tok" -d '{"PrimaryAuthenticationProviderId":-1,"UserName":"Douglass"}' 'https://sps1.petrsnd.org/service/core/v3/Users'
+curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header "Authorization: Bearer $tok" -d '{"PrimaryAuthenticationProviderId":-1,"UserName":"Douglass"}' 'https://<your server>/service/core/v3/Users'
 ```
 
 ```Text
