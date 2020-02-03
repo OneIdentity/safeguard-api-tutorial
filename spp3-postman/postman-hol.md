@@ -96,13 +96,13 @@ do this, but the easier method has its own drawbacks.
 You can import all the requests from an entire service in one shot
 by downloading the OpenAPI file and importing it into Postman.
 
-First, you need to open a browser and navigate to the following for the OpenAPI data of a given service in the Safeguard API:
+First, you need to open a browser and navigate to the following for the OpenAPI data of a given service in the SPP API:
 
 `https://<address>/service/<service>/swagger/docs/v3`
 
 Let's choose the `core` service,
 because it is the biggest and has the most examples of different types of
-Safeguard API endpoints.  Enter the following using your Safeguard network address:
+SPP API endpoints.  Enter the following using your Safeguard network address:
 
 `https://<address>/service/core/swagger/docs/v3`
 
@@ -143,8 +143,8 @@ Consider the issues below.  You do not need to perform these actions now.  Just 
 - On the body tab the attributes that need to be encoded as JSON are there, but
   in order to send them you need to switch to select the `raw` option and change the
   `Text` drop down to `JSON`. You will need to craft the JSON yourself.
-- Most Safeguard API endpoints require authorization so you will need
-  to learn how to create a Safeguard API token and save it in a variable. You
+- Most SPP API endpoints require authorization so you will need
+  to learn how to create a SPP API token and save it in a variable. You
   will learn this later in this lab.
 
 Once you have made changes to a request you can save it back to the imported
@@ -182,8 +182,8 @@ main page, clicking on the three dots `...`, and selecting the `Rename` option. 
 
 ## 4. Import a starter collection for authentication
 
-In order to use the Safeguard API from Postman you need to be able to
-authenticate. Authentication is a multi-step process with the Safeguard API, so
+In order to use the SPP API from Postman you need to be able to
+authenticate. Authentication is a multi-step process with the SPP API, so
 it isn't possible to do that by creating a single request. For
 multiple requests to work together, they need to be part of a collection and
 they need to be able to pass information to one another via the environment.
@@ -347,7 +347,7 @@ in the future.
 
 ## 6. Building and running a saved collection
 
-Some tasks in SPP take more than one request to the Safeguard API. Previously
+Some tasks in SPP take more than one request to the SPP API. Previously
 in Swagger UI, we created a user. In this step, you will modify the `Safeguard`
 collection to perform that task.
 

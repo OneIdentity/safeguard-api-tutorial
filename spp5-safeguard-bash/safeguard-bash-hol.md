@@ -2,7 +2,7 @@
 
 The safeguard-bash scripts are built on the bash shell and the cURL command
 line utility (`curl`). The `curl` command can be used by itself to make HTTP
-requests to the Safeguard API, but safeguard-bash simplifies the process of
+requests to the SPP API, but safeguard-bash simplifies the process of
 authentication and uses mechanisms built into the bash shell and the `curl`
 command line to hide the details of access tokens from process tables.
 The safeguard-bash scripts also make extensive use of a command line utility
@@ -123,11 +123,11 @@ When running from the safeguard-bash Docker container, your host operating
 system will be left unchanged and no tools will need to be installed. Docker
 can be a very clean and safe way to try out software.
 
-## 3. Connecting to the Safeguard API
+## 3. Connecting to the SPP API
 
-The `connect-safeguard.sh` script is used to connect to the Safeguard API. It
+The `connect-safeguard.sh` script is used to connect to the SPP API. It
 follows very similar semantics to `Connect-Safeguard` in safeguard-ps. For
-example, by default it connects to the Safeguard API and creates a session;
+example, by default it connects to the SPP API and creates a session;
 however, the session is stored in a file instead of in a variable.
 `connect-safeguard.sh` also provides an option to return a raw token for
 storage in a variable. When you don't give `connect-safeguard.sh` enough
@@ -145,7 +145,7 @@ A login file has been created.
 ```
 
 That last line stating that a login file has been created means that your
-session is ready to go and you can call the Safeguard API.
+session is ready to go and you can call the SPP API.
 
 To disconnect just run the `disconnec-safeguard.sh` script:
 
@@ -198,7 +198,7 @@ $ echo $tok
 ```
 
 Once you are logged in, you can call a purpose-built script or use
-`invoke-safeguard-method.sh` to call any endpoint in the Safeguard API.
+`invoke-safeguard-method.sh` to call any endpoint in the SPP API.
 
 One thing you may have noticed is that safeguard-bash doesn't have an
 equivalent to the `-Insecure` parameter from safeguard-ps. By default,
@@ -209,7 +209,7 @@ certificates, you need to pass a trusted certificate bundle on the command line
 using the `-B` option. It takes a file as an argument.
 
 safeguard-bash provides a convenience script for downloading a trusted
-certificate bundle directly from the Safeguard API that can be used in future
+certificate bundle directly from the SPP API that can be used in future
 calls. This means you can export the bundle from a secure environment and then
 require it in production to be sure that you are talking to the correct
 appliance.
@@ -224,10 +224,10 @@ The output will tell you the name of the file where the bundle was stored. You
 can `cat` the bundle to see what it looks like, but it is just a chain of
 certificates in PEM format.
 
-Connecting to the Safeguard API using a directory user is a little more
+Connecting to the SPP API using a directory user is a little more
 difficult with safeguard-bash than it is with safeguard-ps. safeguard-bash
 won't prompt you with the actual names of domains or LDAP directories. If you
-pass in the `-q` option, it will query the provider IDs from the Safeguard API,
+pass in the `-q` option, it will query the provider IDs from the SPP API,
 and you can specify the right one using the `-i` option.
 
 For example, if you run with the `-q` option and get this prompt:
@@ -267,7 +267,7 @@ handling use cases.
 ## 5. Calling any endpoint using invoke-safeguard-method.sh
 
 One unique script in safeguard-bash is the `show-safeguard-method.sh` script.
-It can be used to get information about the Safeguard API similar to the
+It can be used to get information about the SPP API similar to the
 information that you would see in Swagger. It only works with a logged in
 session that is stored in the file.
 
@@ -367,12 +367,12 @@ As of this writing, even if you have those tools, it won't work on macOs. There
 is an issue that still needs to be fixed.
 
 In order to work on this step you will need to have two windows open, one to
-make a change via the Safeguard API and another one to watch the change happen.
+make a change via the SPP API and another one to watch the change happen.
 You can either open two separate terminal windows or use a tool such as `tmux`
 to open two separate panes side by side. Another option is to cause events in
 PowerShell or in the desktop UI.
 
-In the first window, connect to the Safeguard API using a user that has the
+In the first window, connect to the SPP API using a user that has the
 ability to create users (a user admin).
 
 ```Bash

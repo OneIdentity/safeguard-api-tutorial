@@ -7,7 +7,7 @@ is meant to be an interactive command line interface to SPP as well as a
 scripting language for automation. We will use it in both ways in this lab.
 
 safeguard-ps has some core functionality that can be used to send any sort of
-Safeguard API request, but it also has specific cmdlets for doing specific jobs
+SPP API request, but it also has specific cmdlets for doing specific jobs
 in SPP.
 
 To start we will need to install safeguard-ps on your computer.
@@ -128,7 +128,7 @@ This will install the latest source with a `.99999` final version number so
 that it will be preferred over any other safeguard-ps module that might be
 installed in another location.
 
-## 4. Connecting to the Safeguard API
+## 4. Connecting to the SPP API
 
 Once you have safeguard-ps installed, you can use the `Connect-Safeguard`
 cmdlet to connect to SPP. Once connected you can call other cmdlets to interact
@@ -254,7 +254,7 @@ Type the following:
 PS> Connect-Safeguard -Insecure -Appliance <your server> -Provider local -Username <your username> -NoSessionVariable
 ```
 
-You will see that SPP returns a giant string containing your Safeguard API
+You will see that SPP returns a giant string containing your SPP API
 token. In order to make use of it you need to capture it in a variable.
 
 Because safeguard-ps also supports positional parameters, you can type the
@@ -286,7 +286,7 @@ PS> Get-SafeguardLoggedInUser -Appliance <your server> -AccessToken $tok -Insecu
 
 You will notice that you have to specify the `-Appliance` parameter and the
 `-Insecure` parameter when using the `-AccessToken` parameter to pass the
-`$tok` variable. Normally those values are stored along with the Safeguard API
+`$tok` variable. Normally those values are stored along with the SPP API
 token in your session. safeguard-ps doesn't know what to use for those values
 when you don't have a session. One way to recognize that you haven't created a
 session yet is that you will try to run a cmdlet and will be prompted for an
@@ -327,7 +327,7 @@ PS> Get-SafeguardCommand
 ```
 
 safeguard-ps currently includes 269 cmdlets, and the number is increasing all
-the time. SPP contains approximately 800 Safeguard API endpoints, which means
+the time. SPP contains approximately 800 SPP API endpoints, which means
 there are specific endpoints that do not have safeguard-ps support.
 
 With so many cmdlets it can be difficult to find the functionality you may be

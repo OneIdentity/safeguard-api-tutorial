@@ -24,12 +24,12 @@ The following tutorials will help you to understand the SPP product design and
 how to manipulate SPP via the SPP API. Each tutorial includes some
 instruction and hands-on lab exercises to help you get familiar with new
 technologies and techniques. Upon completing these tutorials, you will find
-that using the Safeguard API and open source tools to deploy, automate,
+that using the SPP API and open source tools to deploy, automate,
 monitor, and support your Safeguard installation is easy and effective.
 
-- [SPP 1 -- Introduction to the Safeguard API](spp1-introduction)
-- [SPP 2 -- Using Swagger UI to call the Safeguard API](spp2-swagger)
-- [SPP 3 -- Using Postman to call the Safeguard API](spp3-postman)
+- [SPP 1 -- Introduction to the SPP API](spp1-introduction)
+- [SPP 2 -- Using Swagger UI to call the SPP API](spp2-swagger)
+- [SPP 3 -- Using Postman to call the SPP API](spp3-postman)
 - [SPP 4 -- Scripting with safeguard-ps](spp4-safeguard-ps)
 - [SPP 5 -- Scripting with safeguard-bash](spp5-safeguard-bash)
 - [SPP 6 -- SPP integration using SafeguardDotNet](spp6-safeguarddotnet)

@@ -1,4 +1,4 @@
-# SPP 1 -- Introduction to the Safeguard API
+# SPP 1 -- Introduction to the SPP API
 
 Safeguard for Privileged Passwords (SPP) is built as a secure, hardened
 appliance to provide protection for passwords and private keys. In addition to
@@ -10,7 +10,7 @@ details of credential access, credential management, and configuration changes.
 
 Because it is a secure, hardened appliance, all of the functionality of SPP is
 exposed only through the SPP API. There is no direct console access.
-There are no backdoors. There no special internal interfaces that only One
+There are no backdoors. There are no special internal interfaces that only One
 Identity can use. All of the functionality that you see in the SPP UI is
 presented based on interactions with the SPP API.
 
@@ -85,7 +85,7 @@ For details, see Using the virtual appliance and web management console:
 
 In the future, virtual appliances will be available in Azure and AWS.
 
-## Authenticating to the Safeguard API
+## Authenticating to the SPP API
 
 SPP includes a secure token service (STS) that is actually a redistributable
 component that appears in other One Identity products. This redistributable
@@ -95,7 +95,7 @@ SPP supports everything from local authentication using a local SPP user to
 Active Directory users to federated IDPs and FIDO2. It supports RADIUS,
 smart cards, and also 2FA via multiple mechanisms.
 
-Authenticating to use the Safeguard API is a two step process. The initial
+Authenticating to use the SPP API is a two step process. The initial
 authentication is against the rSTS which results in an rSTS token (JSON Web Token or JWT). This
 rSTS token is then exchanged for a SPP API token to access SPP.
 
@@ -116,9 +116,9 @@ to the SPP API.
 Authorization: Bearer <token>
 ```
 
-## Calling Safeguard API Services
+## Calling SPP API Services
 
-The Safeguard API is a REST-based API. Safeguard API endpoints are called using
+The SPP API is a REST-based API. SPP API endpoints are called using
 HTTP operators and JSON (or XML) requests and responses. The SPP API is
 documented using Swagger. You may use the Swagger UI to call the API directly or to
 read the documentation about URLs, parameters, and payloads.
