@@ -1,7 +1,7 @@
 # SafeguardDotNet Hands-on Lab
 
 SafeguardDotNet is a .NET library written in C#. It is available from NuGet.org
-which makes it really easy to use C# to call the Safeguard API.
+which makes it really easy to use C# to call the SPP API.
 
 This lab will require Visual Studio Code which is a free code editor that
 every developer or IT professional should use. It is extremely lightweight, and
@@ -13,7 +13,7 @@ To download and install Visual Studio Code, visit the
 ## Creating a Visual Studio Code project
 
 Once you have Visual Studio Code installed, it is very easy to create your
-first project that calls the Safeguard API.
+first project that calls the SPP API.
 
 First, create a directory with the name you want to give your project and
 change directory into it.

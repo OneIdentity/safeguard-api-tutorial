@@ -11,7 +11,7 @@ For the most part it is safe to say that safeguard-ps is optimized for the
 interactive command line experience in that it provides more purpose-built
 cmdlets than safeguard-bash provides purpose-built scripts. Both safeguard-ps
 and safeguard-bash are built for scripting and automation, and both of them
-include low-level components for invoking any method in the Safeguard API. The
+include low-level components for invoking any method in the SPP API. The
 strength of safeguard-bash is in event listening and resilient long-running
 scripts.
 
@@ -23,7 +23,7 @@ on enhancement requests.
 
 In this portion of the tutorial you will learn to use safeguard-bash which is a
 collection of scripts written in Bash using cURL and jq to interact with the
-Safeguard API.
+SPP API.
 
 ## Exercises
 
@@ -31,7 +31,7 @@ START HERE: [Hands-on Lab](safeguard-bash-hol.md)
 
 1. Installing safeguard-bash and satisfying prerequisites
 2. Get started quickly with safeguard-bash using Docker
-3. Connecting to the Safeguard API
+3. Connecting to the SPP API
 4. A few purpose-built scripts
 5. Calling any endpoint using invoke-safeguard-method.sh
 6. Listening for events

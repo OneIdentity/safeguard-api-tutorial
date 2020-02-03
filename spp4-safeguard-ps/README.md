@@ -1,7 +1,7 @@
 # SPP 4 -- Scripting with safeguard-ps
 
 Swagger UI and Postman are fairly difficult methods to use to call the
-Safeguard API, but they are helpful to teach how REST-based APIs actually work,
+SPP API, but they are helpful to teach how REST-based APIs actually work,
 and information in Swagger UI is very important even when using the open source
 projects and SDKs. Swagger UI is the official documentation for the Safeguard
 API.
@@ -37,7 +37,7 @@ START HERE: [Hands-on Lab](safeguard-ps-hol.md)
 1. Install safeguard-ps from the PowerShell Gallery
 2. Check out safeguard-ps using git command line
 3. Install safeguard-ps from GitHub by downloading a zip
-4. Connecting to the Safeguard API
+4. Connecting to the SPP API
 5. Finding a cmdlet and getting help to call it
 6. Calling any endpoint using Invoke-SafeguardMethod
 7. Creating assets and running management tasks
