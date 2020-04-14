@@ -6,6 +6,10 @@ on-going administration of the product. The key to automating and integrating
 with Safeguard is to become comfortable using the APIs, the
 open source SDKs, and the scripting libraries created to support those APIs.
 
+## Support
+
+One Identity open source projects are supported through **One Identity GitHub issues** and the [One Identity Community](https://www.oneidentity.com/community/). This includes all scripts, plugins, SDKs, modules, code snippets or other solutions. For assistance with any One Identity GitHub project, **please raise a new Issue on the issues page of that particular One Identity GitHub project**. For questions on this API tutorial or hands on labs, you may raise an issue on [the issues page of this repository](https://github.com/OneIdentity/safeguard-api-tutorial/issues), or you may also visit the [One Identity Community](https://www.oneidentity.com/community/) to ask your questions.  Requests for assistance made through official One Identity Support will be referred back to GitHub and the One Identity Community forums where those requests can benefit all users.
+
 ## Safeguard for Privileged Passwords (SPP)
 
 Safeguard for Privileged Passwords (SPP) is built with an API-first design.
