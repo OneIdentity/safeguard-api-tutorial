@@ -10,6 +10,13 @@ open source SDKs, and the scripting libraries created to support those APIs.
 
 One Identity open source projects are supported through **One Identity GitHub issues** and the [One Identity Community](https://www.oneidentity.com/community/). This includes all scripts, plugins, SDKs, modules, code snippets or other solutions. For assistance with any One Identity GitHub project, **please raise a new Issue on the issues page of that particular One Identity GitHub project**. For questions on this API tutorial or the hands on labs, you may raise an issue on [the issues page of this repository](https://github.com/OneIdentity/safeguard-api-tutorial/issues), or you may also visit the [One Identity Community](https://www.oneidentity.com/community/) to ask your questions.  Requests for assistance made through official One Identity Support will be referred back to GitHub and the One Identity Community forums where those requests can benefit all users.
 
+## API Versions
+
+Safeguard for Privileged Passwords 7.X hosts both the v3 and v4 APIs. New coding
+projects should target the v4 API, and existing projects can be migrated over time.
+Notification will be given to customers many releases in advance of any plans to
+remove the v3 API. There are currently no plans to remove the v3 API.
+
 ## Safeguard for Privileged Passwords (SPP)
 
 Safeguard for Privileged Passwords (SPP) is built with an API-first design.
