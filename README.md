@@ -52,3 +52,4 @@ projects also hosted on GitHub:
 - [safegaurd-bash](https://github.com/OneIdentity/safeguard-bash)
 - [SafeguardDotNet](https://github.com/OneIdentity/SafeguardDotNet)
 - [SafeguardJava](https://github.com/OneIdentity/SafeguardJava)
+- [safeguard.js](https://github.com/OneIdentity/safeguard.js)
