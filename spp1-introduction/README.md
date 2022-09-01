@@ -57,10 +57,10 @@ separate API. They differ in authentication, versioning scheme, and
 basic API endpoint design. In the future SPP and SPS will share a single
 authentication strategy. There will always be differences between SPP and SPS APIs, but over time they will become more alike.
 
-For more information on clusters, see `Disaster recovery and clusters`: 
+For more information on clusters, see `Disaster recovery and clusters`:
 [https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/99#TOPIC-1269467](https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/99#TOPIC-1269467)
 
-For more information on the join, see `Appendix C: SPP and SPS join guidance`: 
+For more information on the join, see `Appendix C: SPP and SPS join guidance`:
 [https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/128#TOPIC-1269585](https://support.oneidentity.com/technical-documents/one-identity-safeguard/administration-guide/128#TOPIC-1269585)
 
 
@@ -101,7 +101,7 @@ rSTS token is then exchanged for a SPP API token to access SPP.
 
 ![SPP Auth Process](img/spp-auth-process.png)
 
-Administrators do not have to be experts in rSTS. SPP rSTS authentication uses 
+Administrators do not have to be experts in rSTS. SPP rSTS authentication uses
 OAuth 2.0. Our rSTS supports several different grant
 types. **Authorization code grant** is used by the SPP desktop UI, the `-Gui`
 parameter in safeguard-ps, and SafeguardDotNet.GuiLogin. **Implicit grant** is
@@ -263,14 +263,14 @@ The resulting HTTP request looks like this:
 03e2:
 ```
 
-The SPP API uses URL versioning. The current version is "v3". The previous
-version "v2" is also supported, and in many cases, the endpoints are
+The SPP API uses URL versioning. The current version is "v4". The previous
+version "v3" is also supported, and in many cases, the endpoints are
 equivalent. However, it is recommended that you call the most recent version
 of the SPP API where possible. The good news is that since SPP maintains
 backwards compatibility of the API where possible, the investments that you
 make now in automation will continue to work in the future. Only when it is
 impossible to make a previous version of an endpoint work does the SPP team
-deprecate an existing API.
+deprecate and remove an existing API.
 
 The following is another example that uses POST and sends a body:
 
