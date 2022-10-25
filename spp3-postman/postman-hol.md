@@ -53,7 +53,7 @@ toggle next to `SSL certificate verification`.
 
 ![Disable SSL](img/disable-ssl.png)
 
-Then, you need to fill out the request with a URL: `https://<address>/service/appliance/v3/ApplianceStatus/Health`
+Then, you need to fill out the request with a URL: `https://<address>/service/appliance/v4/ApplianceStatus/Health`
 but replacing `<address>` with your appliance network address or DNS name.
 
 Then, go back and click on the `Send` button (see the following illustration).
@@ -98,31 +98,31 @@ by downloading the OpenAPI file and importing it into Postman.
 
 First, you need to open a browser and navigate to the following for the OpenAPI data of a given service in the SPP API:
 
-`https://<address>/service/<service>/swagger/docs/v3`
+`https://<address>/service/<service>/swagger/v4/swagger.json`
 
 Let's choose the `core` service,
 because it is the biggest and has the most examples of different types of
 SPP API endpoints.  Enter the following using your Safeguard network address:
 
-`https://<address>/service/core/swagger/docs/v3`
+`https://<address>/service/core/swagger/v4/swagger.json`
 
 When the OpenAPI file is loaded in the browser as a giant document, you should
 be able to right-click in Chrome then `Save as` or, in Firefox, you can click the
 `Save` button in the upper left of the view.  Once you have the file saved as
-`v3.json`. You will be able to import it into Postman.  Go back to Postman and click the `Import` button.
+`v4.json`. You will be able to import it into Postman.  Go back to Postman and click the `Import` button.
 
 ![Import Button](img/import-button.png)
 
 When the Import form pops up click on the `Choose Files` button.
 
-Select the `v3.json` file that you downloaded.
+Select the `v4.json` file that you downloaded.
 
 If you see an `IMPORT` screen, select `Generate a Postman Collection`.
 
-After you select the `v3.json` file, it doesn't seem like the dialog is responding, but then it will close and
+After you select the `v4.json` file, it doesn't seem like the dialog is responding, but then it will close and
 send you back to the main Postman view. After a few seconds a pop up appears in the lower right corner saying that the file was imported.
 
-If you go back to the `Collections` tab in the left pane and expand the `v3`
+If you go back to the `Collections` tab in the left pane and expand the `Safeguard Core API / v4`
 node, you will see that the entire `core` service has been imported into
 Postman.
 
@@ -176,9 +176,9 @@ address or DNS name of the target appliance.
 
 ![Server Variable](img/server-variable.png)
 
-Before moving on in this tutorial, rename your `v3` collection to `core`. You can do
+Before moving on in this tutorial, you can rename your collection. You can do
 this on the `EDIT COLLECTION` view, or by selecting it in the left pane of the
-main page, clicking on the three dots `...`, and selecting the `Rename` option.  The `core` collection will be used later.
+main page, clicking on the three dots `...`, and selecting the `Rename` option.
 
 ## 4. Import a starter collection for authentication
 
@@ -284,7 +284,7 @@ values for variables in the environment.
 Now that `safeguard_token` is set in the environment we can use it in other
 collections.
 
-To make this useful in your `core` collection:
+To make this useful in your `Safeguard Core API` collection:
 1. Edit the collection.
 2. Click on the `Authorization` tab.
 3. Set the type to `Bearer Token`.
@@ -292,7 +292,7 @@ To make this useful in your `core` collection:
 5. Click `Update`.
 
 To use this in one of the requests under `core`:
-1. Pick any GET request (v3/Me for example)
+1. Pick any GET request (v4/Me for example)
 2. Uncheck all the query parameters on the `Params` tab
 3. On the `Authorization` tab change the drop down to `Inherit auth from parent`
 4. Click the `Send` button
@@ -311,14 +311,14 @@ future use.
 You may want to turn on
 `File -> Settings -> REQUEST, Always ask when closing unsaved tabs`.
 
-Another thing you may want to do is go back into your `core` collection and set
+Another thing you may want to do is go back into your `Safeguard Core API` collection and set
 it up to use the `appliance` variable rather than the `server` collection
 variable you created earlier.
 
 ## 5. Running a simple POST
 
 First, let's use Postman to create a new asset partition in SPP. To do this
-you need to go under your `core` collection and click on `POST Adds a new AssetPartition`.
+you need to go under your `Safeguard Core API` collection and click on `POST Adds a new AssetPartition`.
 
 ![Add Partition](img/add-partition.png)
 
@@ -382,7 +382,7 @@ Click the `Save to New Local User` button.
 Open the new `Create User Entity` request and change it to a `POST` in the drop
 down.
 
-Set the URL to `{{coreUrl}}/v3/Users`.
+Set the URL to `{{coreUrl}}/v4/Users`.
 
 The `Authorization` tab should already be set to `Inherit auth from parent`.
 
@@ -397,7 +397,9 @@ Add the following body:
 	"UserName": "<pick a name>",
 	"FirstName": "<pick a name>",
 	"LastName": "<pick a name>",
-	"PrimaryAuthenticationProviderId": -1
+	"PrimaryAuthenticationProvider": {
+            "Id": -1
+        }
 }
 ```
 
@@ -426,7 +428,7 @@ Click the `Save to New Local User` button.
 Open the new `Create User Entity` request and change it to a `PUT` in the drop
 down.
 
-Set the URL to `{{coreUrl}}/v3/Users/{{new_user_id}}/Password`.
+Set the URL to `{{coreUrl}}/v4/Users/{{new_user_id}}/Password`.
 
 The `Authorization` tab should already be set to `Inherit auth from parent`.
 
