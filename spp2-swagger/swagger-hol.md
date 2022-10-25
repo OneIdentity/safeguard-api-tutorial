@@ -4,7 +4,7 @@
 
 To access the Swagger OpenAPI file use a browser to navigate to:
 
-`https://<address>/service/<service>/swagger/docs/v3`
+`https://<address>/service/<service>/swagger/v4/swagger.json`
 
 - Replace `<address>` with your appliance network address or DNS name.
 - Replace `<service>` with one of `core`, `appliance`, or `notification`.
@@ -13,9 +13,6 @@ It is recommended you open the URL in Firefox or another JSON parser so the larg
 JSON file is parsed and formatted. This allows you to view the basic stturcture.
 
 ![OpenAPI doc](img/open-api-doc.png)
-
-You can see that as of this writing (SPP 2.10) the SPP API is using the
-Swagger or OpenAPI specification version 2.0.
 
 Expanding the `paths` node in Firefox or another JSON document parser will show
 all of the endpoints published for this service in the SPP API.
@@ -34,10 +31,10 @@ several places in the SPP API to perform a `post` action, when that
 particular action does not fit neatly into CRUD semantics. In these cases the
 path to that endpoint will end in a verb rather than a noun.
 
-For example, `post` `service/core/v3/AccessRequests/{id}/Deny` is a `post`
-action, whereas `post` `service/core/v3/AccessRequests` is a `create` action.
+For example, `post` `service/core/v4/AccessRequests/{id}/Deny` is a `post`
+action, whereas `post` `service/core/v4/AccessRequests` is a `create` action.
 
-Expanding the `definitions` node will show all of the data transfer objects
+Expanding the `components/schemas` node will show all of the data transfer objects
 (DTOs) that are published for this service in the SPP API. DTOs are the
 data representations that are passed back and forth from REST APIs.
 
@@ -51,7 +48,7 @@ To access the Swagger UI use a browser to navigate to:
 
 Your browser will be automatically redirected to:
 
-`https://<address>/service/notification/swagger/ui/index`
+`https://<address>/service/notification/swagger/index.html`
 
 Sometimes Swagger UI can take a significant amount of time to load, especially
 with the `core` service. `notification` should load very quickly. Once the page
@@ -70,7 +67,7 @@ selected endpoint. See the illustration and description that follows:
 ![Status Availability](img/status-availability.png)
 
 As shown in the above illustration, the top portion of the form contains a field that will show an example of the
-type of output the endpoint will produce. There is a link to `Model` which will
+type of output the endpoint will produce. There is a link to `Schema` which will
 switch to a view that gives detailed information about the object properties in
 the `Example Value`. The drop down next to `Response Content Type` will allow
 you to select a different type of output. Usually, `application/json` is the
@@ -107,13 +104,13 @@ configuration. Change the URL in your browser to:
 Your browser will be automatically
 redirected to:
 
-`https://<address>/service/core/swagger/ui/index`
+`https://<address>/service/core/swagger/index.html`
 
 This time it will take a while for the page to load. Swagger UI is processing
 a much larger OpenAPI file.
 
 Once the page opens, click on the `AssetPartitions` endpoint. Then, click on
-`GET /v3/AssetPartitions` to expand the endpoint.
+`GET /v4/AssetPartitions` to expand the endpoint.
 
 Click on `Try it out!` as you did before. This time the HTTP response will be
 an error because you are not authenticated.
@@ -139,7 +136,7 @@ this and future tutorials.
 
 ## 5. Calling the core service to create a user
 
-Click on the `Users` endpoint. Click on `POST /v3/Users` to expand that endpoint. The HTML form will expand
+Click on the `Users` endpoint. Click on `POST /v4/Users` to expand that endpoint. The HTML form will expand
 to show more options for calling this endpoint. See the following illustration and descripiton.
 
 ![POST Users](img/post-users.png)
@@ -150,19 +147,12 @@ HTTP request. This body parameter will often be called `entity`. Other types of
 parameters include query and path parameters.
 
 You will need to prepare a body in order to call this endpoint to create your
-new user. You can click on the `Example Value` in the `Parameters` section to
-copy that value into the body for the `entity` parameter. You can generally
-delete most of the properties that get copied over.
+new user. Clicking `Try it out` will populate the Request body. You can generally
+delete most of the properties.
 
 ![POST body](img/post-body.png)
 
-Make sure you use the corner of the `Value` field to give yourself enough room
-to compose your HTTP request body. If you switch over to `Model` you will see
-bolded property names for those that are required. This information is mostly
-accurate, but some endpoints have conditional required fields which is
-difficult to represent in OpenAPI 2.0.
-
-Click the `Example Value` to compose a body for your new user. The `entity` box is populated. The picture above says "string" for the `UserName` which is a terrible name for a user. Use something similar to the body
+The `User to create` box is populated. The picture above says "string" for the `Name` which is a terrible name for a user. Use something similar to the body
 below which will give the new user the admin rights necessary to do whatever
 future tutorials require.
 
@@ -174,12 +164,14 @@ future tutorials require.
     "ApplianceAdmin",
     "PolicyAdmin",
     "UserAdmin"],
-  "UserName": "billybob",
-  "PrimaryAuthenticationProviderId": -1
+  "Name": "billybob",
+  "PrimaryAuthenticationProviderId": {
+    "Id": -1
+  }
 }
 ```
 
-Click on the `Try it now!` button to send your HTTP request.
+Click on the `Execute` button to send your HTTP request.
 
 The response will include a large JSON body representing the new user you just
 created. Take note of the "Id" field, because we will use that in the next
@@ -189,15 +181,15 @@ step.
 
 ## 6. Calling the core service to set the user password
 
-Click on `PUT /v3/Users/{id}/Password` to expand that endpoint. The HTML form
+Click on `PUT /v4/Users/{id}/Password` to expand that endpoint. The HTML form
 will expand to show more options for calling this endpoint.
 
 You will notice that there is a new parameter called `id` with the path type.
 You can see from the URL of the endpoint how this `id` will be filled into the
 HTTP request.
 
-To set a password for your new user, type the "Id" from the
-previous step into the `Value` of the `id` parameter. In my case this is 13.
+To set a password for your new user, click the `Try it out` button, then type the "Id" from the
+previous step into the `Value` of the `id` parameter. In my case this is 3.
 
 Then, you need to set the password. Notice that the `Parameter content type` is
 set to `application/json`. This means that I need to quote the string that I
@@ -206,7 +198,7 @@ put into the body as shown here: "BillyBob123". See the following illustration a
 ![Set Password](img/set-password.png)
 
 Set your password to the quoted JSON string you want, then click the
-`Try it out!` button.
+`Execute` button.
 
 This time you will get a 204 `Response Code` indicating success, but you will
 not get a `Response Body`.
@@ -216,7 +208,7 @@ reauthenticate as your new user. In my case this is user name "billybob" and pas
 
 ## 7. Using query parameters
 
-Scroll to `Users` and click on `GET /v3/Users` to expand that endpoint. The HTML form will expand to
+Scroll to `Users` and click on `GET /v4/Users` to expand that endpoint. The HTML form will expand to
 show more options for calling this endpoint.
 
 You will notice that there are a lot of new parameters for this endpoint. Most
@@ -254,10 +246,12 @@ The following is a breakdown for using these query parameters:
 We will use the `filter` and `fields` parameters to get information about the
 new user you just created.
 
+Click the `Try it out` button.
+
 In the `filter` parameter type in the following:
 
 ```
-UserName eq '<user name you chose>'
+Name eq '<name you chose>'
 ```
 
 In my case this would be:
@@ -269,10 +263,10 @@ UserName eq 'billybob'
 In the `fields` parameter type the following:
 
 ```
-Id,IdentityProviderName,UserName,AdminRoles
+Id,IdentityProvider.Name,Name,AdminRoles
 ```
 
-Then, click on the `Try it now!` button. You will see that the `Response Body`
+Then, click on the `Execute` button. You will see that the `Response Body`
 contains a much more understandable list of properties in the resulting JSON
 object. This can be valuable for two reasons:
 
@@ -287,11 +281,11 @@ Let's move on to the `appliance` service. Change the URL in your browser to:
 
 Your browser will be automatically redirected to:
 
-`https://<address>/service/appliance/swagger/ui/index`
+`https://<address>/service/appliance/swagger/index.html`
 
 Click on `ApplianceStatus` to expand that endpoint to reveal the endpoints that are available beneath it. 
-Click on the `POST /v3/ApplianceStatus/Reboot` endpoint and enter test in the reason parameter value field. Go try to click on the `Try it out!` button of the
-`POST /v3/ApplianceStatus/Reboot` endpoint. You will find that you are met with
+Click on the `POST /v4/ApplianceStatus/Reboot` endpoint, click the `Try it out` button and enter test in the reason parameter value field. Go try to click on the `Execute` button of the
+`POST /v4/ApplianceStatus/Reboot` endpoint. You will find that you are met with
 a 401 unauthorized error.
 
 This illustrates that every time you switch between the Swagger UI pages you will need to
