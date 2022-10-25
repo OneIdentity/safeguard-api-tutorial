@@ -141,13 +141,13 @@ The resulting HTTP request looks something like this:
 An example of exchanging the rSTS token for the SPP API token:
 
 ```Bash
-curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' 'https://<your server>/service/core/v3/Token/LoginResponse' -d '{ "StsAccessToken": "<rsts token>" }'
+curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' 'https://<your server>/service/core/v4/Token/LoginResponse' -d '{ "StsAccessToken": "<rsts token>" }'
 ```
 
 The resulting HTTP request looks something like this:
 
 ```Text
-0000: POST /service/core/v3/Token/LoginResponse HTTP/2
+0000: POST /service/core/v4/Token/LoginResponse HTTP/2
 0032: Host: <your server>
 0047: User-Agent: curl/7.58.0
 0060: Content-Type: application/json
@@ -192,7 +192,7 @@ documented using Swagger. You may use the Swagger UI to call the API directly or
 read the documentation about URLs, parameters, and payloads.
 
 To access the Swagger UI use a browser to navigate to:
-`https://<address>/service/<service>/swagger`
+`https://<address>/service/<service>/swagger/index.html`
 
 - `<address>` = SPP network address
 - `<service>` = SPP service to use
@@ -223,9 +223,9 @@ several places in the SPP API to perform a `POST` action, when that
 particular action does not fit neatly into CRUD semantics. In these cases the
 path to that endpoint will end in a verb rather than a noun.
 
-For example, `POST` `service/core/v3/AccessRequests/{id}/Deny` is a `POST`
+For example, `POST` `service/core/v4/AccessRequests/{id}/Deny` is a `POST`
 action that denies an access request, whereas `POST`
-`service/core/v3/AccessRequests` is a `create` action.
+`service/core/v4/AccessRequests` is a `create` action.
 
 The SPP API is protected by TLS. SPP ships with a built-in self-signed
 certificate that should be replaced with a legitimate TLS certificate that is
@@ -236,13 +236,13 @@ client. An example using cURL where the `$tok` contains an SPP API token
 and `-k` is specified to avoid complaints about a self-signed certificate:
 
 ```Bash
-curl -k -X GET --header 'Accept: application/json' --header "Authorization: Bearer $tok" 'https://<your server>/service/core/v3/Users'
+curl -k -X GET --header 'Accept: application/json' --header "Authorization: Bearer $tok" 'https://<your server>/service/core/v4/Users'
 ```
 
 The resulting HTTP request looks like this:
 
 ```Text
-0000: GET /service/core/v3/Users HTTP/1.1
+0000: GET /service/core/v4/Users HTTP/1.1
 0025: Host: <your server>
 003b: User-Agent: curl/7.55.1
 0054: Accept: application/json
@@ -275,11 +275,11 @@ deprecate and remove an existing API.
 The following is another example that uses POST and sends a body:
 
 ```Bash
-curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header "Authorization: Bearer $tok" -d '{"PrimaryAuthenticationProviderId":-1,"UserName":"Douglass"}' 'https://<your server>/service/core/v3/Users'
+curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header "Authorization: Bearer $tok" -d '{"PrimaryAuthenticationProviderId":-1,"UserName":"Douglass"}' 'https://<your server>/service/core/v4/Users'
 ```
 
 ```Text
-0000: POST /service/core/v3/Users HTTP/2
+0000: POST /service/core/v4/Users HTTP/2
 0024: Host: <your server>
 003a: User-Agent: curl/7.58.0
 0053: Content-Type: application/json
