@@ -225,7 +225,7 @@ Run the following command to reuse your session:
 PS> Get-SafeguardLoggedInUser
 ```
 
-safeguard-ps will send an HTTP request to `GET service/core/v3/Me` but it will
+safeguard-ps will send an HTTP request to `GET service/core/v4/Me` but it will
 automatically fill out the `Authorization` header for you.
 
 You will notice the result to that cmdlet is not JSON. When making HTTP
@@ -424,7 +424,7 @@ easiest way to learn to use these is to try out a few examples.
 Run the following to find a specific user by name:
 
 ```PowerShell
-PS> Invoke-SafeguardMethod core GET Users -Parameters @{ filter = "UserName icontains 'billy'"; fields = "UserName,AdminRoles" }
+PS> Invoke-SafeguardMethod core GET Users -Parameters @{ filter = "Name icontains 'billy'"; fields = "Name,AdminRoles" }
 ```
 
 Notice that semicolons (`;`) are used instead of commas to separate properties
@@ -439,7 +439,7 @@ Run the following to create a user:
 
 ```PowerShell
 PS> Invoke-SafeguardMethod core POST Users -Body @{
-    UserName = "NewGuy"
+    Name = "NewGuy"
 }
 ```
 
@@ -449,7 +449,7 @@ parameter you can see more of the response body that gives more information:
 
 ```PowerShell
 PS> Invoke-SafeguardMethod core POST Users -Body @{
-    UserName = "NewGuy"
+    Name = "NewGuy"
 } -Verbose
 ```
 
@@ -464,7 +464,7 @@ So, adding the authentication provider Id (-1 is the built-in local provider):
 
 ```PowerShell
 PS> Invoke-SafeguardMethod core POST Users -Body @{
-    UserName = "NewGuy";
+    Name = "NewGuy";
     PrimaryAuthenticationProviderId = -1
 }
 ```
@@ -484,7 +484,7 @@ Type in the following:
 
 ```PowerShell
 PS> Invoke-SafeguardMethod core POST Users -JsonBody "{
-    `"UserName`":  `"AnotherNewGuy`",
+    `"Name`":  `"AnotherNewGuy`",
     `"AdminRoles`": [`"UserAdmin`",`"AssetAdmin`",`"PolicyAdmin`"],
     `"PrimaryAuthenticationProviderId`": -1
 }"
