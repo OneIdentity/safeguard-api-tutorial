@@ -298,7 +298,7 @@ which can get tricky. You can use a single quote to make it easier or you can
 use a heredoc:
 
 ```Bash
-$ invoke-safeguard-method -s core -m POST -U Users -b '{"UserName":"Pickles","PrimaryAuthenticationProviderId":-1,"AdminRoles":["UserAdmin","PolicyAdmin","ApplianceAdmin","AssetAdmin"]}'
+$ invoke-safeguard-method -s core -m POST -U Users -b '{"Name":"Pickles","PrimaryAuthenticationProvider":{"Id":-1},"AdminRoles":["UserAdmin","PolicyAdmin","ApplianceAdmin","AssetAdmin"]}'
 ```
 
 The heredoc example might be easier to type:
@@ -306,8 +306,8 @@ The heredoc example might be easier to type:
 ```Bash
 $ invoke-safeguard-method.sh -s core -m POST -U Users -b "$(cat <<EOF
 {
-"UserName":"Raspberry",
-"PrimaryAuthenticationProviderId":-1
+"Name":"Raspberry",
+"PrimaryAuthenticationProvider":{"Id":-1}
 }
 EOF
 )"
@@ -317,8 +317,8 @@ If you decide to use double quotes, you need to escape the quotes in the JSON:
 
 ```Bash
 $ invoke-safeguard-method.sh -s core -m POST -U Users -b "{
-\"UserName\":\"blueberry\",
-\"PrimaryAuthenticationProviderId\":-1
+\"Name\":\"blueberry\",
+\"PrimaryAuthenticationProvider\":{\"Id\":-1}
 }"
 ```
 
@@ -329,8 +329,8 @@ into the JSON bodies from your script.
 $ SomeName=BigBird
 $ invoke-safeguard-method.sh -s core -m POST -U Users -b "$(cat <<EOF
 {
-"UserName":"$SomeName",
-"PrimaryAuthenticationProviderId":-1
+"Name":"$SomeName",
+"PrimaryAuthenticationProvider":{"Id":-1}
 }
 EOF
 )"
@@ -344,7 +344,7 @@ You can also user query parameters with `invoke-safeguard-method.sh`.
 The following is an example of using the `fields` query parameter:
 
 ```Bash
-$ invoke-safeguard-method.sh -s core -m GET -U Users?fields=UserName,AdminRoles
+$ invoke-safeguard-method.sh -s core -m GET -U Users?fields=Name,AdminRoles
 ```
 
 If you want to specify more than one query parameter, then you need to use an
@@ -355,7 +355,7 @@ interpreted by the shell, and it won't work.
 Run the following:
 
 ```Bash
-$ invoke-safeguard-method.sh -s core -m GET -U "Users?fields=UserName,AdminRoles&filter=UserName%20eq%20'Pickles'"
+$ invoke-safeguard-method.sh -s core -m GET -U "Users?fields=Name,AdminRoles&filter=UserName%20eq%20'Pickles'"
 ```
 
 ## 6. Listening for events
