@@ -10,6 +10,9 @@ it has broad support for many technologies, not just C# and .NET.
 To download and install Visual Studio Code, visit the
 [webpage](https://code.visualstudio.com/download) and follow the instructions.
 
+And you'll need a C# extension:
+![Visual Studio Code](data/csharpext.png)
+
 ## Creating a Visual Studio Code project
 
 Once you have Visual Studio Code installed, it is very easy to create your
@@ -39,6 +42,16 @@ PS> dotnet add package OneIdentity.SafeguardDotNet
 
 This will add the latest OneIdentity.SafeguardDotNet NuGet package into your
 project.
+
+If you encounter the this error:
+![Visual Studio Code](data/error401.png)
+
+Add this file to your project: [nuget.config](data/nuget.config)
+
+Run:
+```PowerShell
+PS> dotnet add package OneIdentity.SafeguardDotNet
+```
 
 Run:
 ```PowerShell
