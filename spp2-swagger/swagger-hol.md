@@ -60,7 +60,7 @@ service.
 ## 3. Calling the notification service -- anonymous GET
 
 Click on `Status` to expand that endpoint to reveal the endpoints that are
-available beneath it. Then, click on `GET /v3/Status/Availability`.
+available beneath it. Then, click on `GET /v4/Status/Availability`.
 This will expand to reveal an HTML form that allows you to interact with the
 selected endpoint. See the illustration and description that follows:
 
@@ -74,7 +74,7 @@ you to select a different type of output. Usually, `application/json` is the
 most useful output, but for reporting use cases `text/csv` is also very
 helpful.
 
-Click on the `Try it out!` button to call the `GET /v3/Status/Availability`
+Click on the `Try it out!` button to call the `GET /v4/Status/Availability`
 endpoint. The Swagger UI issues an HTTP GET request to the server. The HTML
 form expands to show the resulting output from the HTTP response. See the following illustration and description.
 
@@ -231,17 +231,25 @@ The following is a breakdown for using these query parameters:
 | `filter`			| Example															| Notes 								|
 | -----				| -----																| ----- 								|
 | `eq`				| `GET /AssetAccounts?filter=Name eq 'George'`						| equal to 								|
+| `ieq`				| `GET /AssetAccounts?filter=Name eq 'George'`						| case-insensitive equal to |
+| `sw`				| `GET /AssetAccounts?filter=Name sw 'Geo'`						| starts with 								|
+| `isw`				| `GET /AssetAccounts?filter=Name isw 'Geo'`						| case-insensitive starts with |
+| `ew`				| `GET /AssetAccounts?filter=Name ew 'rge'`						| ends with 								|
+| `iew`				| `GET /AssetAccounts?filter=Name iew 'rge'`						| case-insensitive ends with |
 | `ne` 				| `GET /Users?filter=LastName ne 'Bailey'` 							| not equal to 							|
 | `gt` 				| `GET /Assets?filter=Id gt 10` 									| greater than 							|
 | `ge` 				| `GET /Assets?filter=Id ge 10` 									| greater than or equal to 				|
 | `lt` 				| `GET /Assets?filter=Id lt 10` 									| less than 							|
 | `le` 				| `GET /Assets?filter=Id le 10` 									| less than or equal to 				|
-| `and` 			| `GET /UserGroups?filter=(Id eq 1) and (Name eq 'Angels')` 		| 										|
-| `or` 				| `GET /UserGroups?filter=(Id eq 1) or (Name eq 'Bedford')` 		| 										|
-| `not` 			| `GET /UserGroups?filter=(Id eq 1) and not (Name eq 'Potters')` 	| 										|
-| `contains` 		| `GET /Users?filter=Description contains 'greedy'` 				| 										|
-| `q` 				| `GET /Users?q=bob` 												| contains for all relevant properties 	|
+| `and` 			| `GET /UserGroups?filter=(Id eq 1) and (Name eq 'Angels')` 		| combine multiple conditions with and |
+| `or` 				| `GET /UserGroups?filter=(Id eq 1) or (Name eq 'Bedford')` 		| combine multiple conditions with or |
+| `not` 			| `GET /UserGroups?filter=(Id eq 1) and not (Name eq 'Potters')` 	| logic not of a condition |
+| `contains` 	| `GET /Users?filter=Description contains 'greedy'` 				| string value contains a substring |
+| `icontains` | `GET /Users?filter=Description contains 'greedy'` 				| case-insensitive string value contains a substring |
+| `q` 				| `GET /Users?q=bob` 												| contains for all relevant string properties 	|
 | `in` 				| `GET /Users?filter=UserName in [ 'bob', 'sally', 'frank' ]` 		| property values in a predefined set 	|
+
+Use \ to escape quotes, asterisks and backslashes in strings.
 
 We will use the `filter` and `fields` parameters to get information about the
 new user you just created.
