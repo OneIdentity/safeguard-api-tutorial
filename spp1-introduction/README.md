@@ -4,7 +4,7 @@ Safeguard for Privileged Passwords (SPP) is built as a secure, hardened
 appliance to provide protection for passwords and private keys. In addition to
 storing these credentials, SPP automates the management of the credentials in
 the environment, which helps regulatory compliance and security. To access
-passwords, private keys, and sessions, SPP provides a role-bashed policy model
+passwords, private keys, and sessions, SPP provides a role-based policy model
 and access request workflow. SPP maintains an indelible audit log of all
 details of credential access, credential management, and configuration changes.
 
@@ -26,20 +26,18 @@ appliance is the complete product. In reality, SPP is almost never deployed as a
 appliance. In fact, One Identity very much recommends that you only deploy SPP
 as a cluster of three or five appliances. The reason for this is that the SPP
 application is actually best served as a cluster for maximum efficiency and security.
-All of the appliances is in the
-cluster have all of the data. The most critical services such as access request
-workflow, credential management, and auditing are provided from every appliance
-in the cluster. For example, every appliance in the cluster is aware of password
-releases. This is known as active/active clustering rather
-than active/passive clustering. There is a primary appliance that is used for making
-configuration changes, but any appliance in the cluster can be modified to
-assume the primary role.
+All of the appliances in the cluster have all of the data. The most critical services 
+such as access request workflow, credential management, and auditing are provided from 
+every appliance in the cluster. For example, every appliance in the cluster is aware of 
+password releases. This is known as active/active clustering rather than active/passive 
+clustering. There is a primary appliance that is used for making configuration changes, 
+but any appliance in the cluster can be modified to assume the primary role.
 
 ![SPP Cluster](img/cluster.png)
 
 When thinking of SPP product functionality, it is important to think of it as
 a highly available, redundant, fully consistent cluster solution rather than a
-purpose-built 1U appliance sitting in your data center.
+purpose-built appliance sitting in your data center.
 
 SPP clusters are also built to work with Safeguard for Privileged Sessions
 (SPS) appliances and clusters. SPP and SPS clusters can be joined together to
@@ -83,7 +81,7 @@ For details, see Using the virtual appliance and web management console:
 
 ![Virtual](img/virtual.png)
 
-In the future, virtual appliances will be available in Azure and AWS.
+Virtual appliances are also available in Azure and AWS.
 
 ## Authenticating to the SPP API
 
