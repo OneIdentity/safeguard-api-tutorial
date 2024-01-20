@@ -543,11 +543,11 @@ the different names you chose instead.
 Run the following, supplying the names you used in the previous commands:
 
 ```PowerShell
-PS> Get-SafeguardAssetAccount -Fields "AssetName,Name,HasPassword" Gryffindor hpotter
+PS> Get-SafeguardAssetAccount -Fields "Asset.Name,Name,HasPassword" Gryffindor hpotter
 
-AssetName  Name    HasPassword
----------  ----    -----------
-Gryffindor hpotter       False
+Name    Asset              HasPassword
+----    -----              -----------
+hpotter @{Name=Gryffindor}       False
 ```
 
 #### Running a management task
@@ -577,11 +577,11 @@ at the top of the terminal.
 Now, if you run the following again:
 
 ```PowerShell
-PS> Get-SafeguardAssetAccount -Fields "AssetName,Name,HasPassword" Gryffindor hpotter
+PS> Get-SafeguardAssetAccount -Fields "Asset.Name,Name,HasPassword" Gryffindor hpotter
 
-AssetName  Name    HasPassword
----------  ----    -----------
-Gryffindor hpotter       True
+Name    Asset              HasPassword
+----    -----              -----------
+hpotter @{Name=Gryffindor}        True
 ```
 
 You can see that `hpotter` now has a password in SPP.
