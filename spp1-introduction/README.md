@@ -101,28 +101,51 @@ rSTS token is then exchanged for a SPP API token to access SPP.
 
 Administrators do not have to be experts in rSTS. SPP rSTS authentication uses
 OAuth 2.0. Our rSTS supports several different grant
-types. **Authorization code grant** is used by the SPP desktop UI, the `-Gui`
-parameter in safeguard-ps, and SafeguardDotNet.GuiLogin. **Implicit grant** is
-used by the SPP web UI. **Resource owners grant** is used by most of our open
+types. For example, the **Authorization code grant** type, with PKCE is used by the the `-Browser`
+parameter in safeguard-ps, SafeguardDotNet.BrowserLogin, and SafeguardDotNet.GuiLogin.
+That is also what is used by Safeguard's own web UI. The **Resource owners grant** is also an option used by most of our open
 source projects such as safeguard-ps, safeguard-bash, SafeguardJava, and
 SafeguardDotNet.
+
+Note, as of Safeguard version 7.4, it is possible for an administrator to disable
+these OAuth 2.0 grant types. In Safeguard 8.0, for new installations, they are
+disabled by default. If you upgrade from 7.x to Safeguard 8.0, the settings are
+not modified. That is, they will continue to have the same value prior to the upgrade.
+
+It is recommended that all integration applications authenticate users via the web
+browser. Your application should not prompt for and collect a user's credentials on
+its own.
+
+For fully automated, unattended application services, it is recommended to use
+certificate based authentication so that you do not have to hard code credentials
+into your application or application configuration file. Instead, you add the
+certificate's private key to the operating system's certificate store, keychain,
+or a secure directory that is only accessible by your service application's user
+account.
 
 An example of calling the rSTS:
 
 ```Bash
 curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' 'https://<your server>/RSTS/oauth2/token' -d '{ "grant_type": "password", "username": "Admin", "password": "Admin123", "scope": "rsts:sts:primaryproviderid:local" }'
 ```
+> Note, ensure that your Safeguard configuration allows the `Resource Owner` grant type,
+> found under Appliance Management -> Safeguard Access -> Local Login Control.
 
-Finding the value for the `scope` parameter can be difficult for Active Directory
-users, but there are well-known values for built-in identity providers:
+The value of the `scope` parameter will vary for an Active Directory
+user or other authentication providers. But there are two well-known values for built-in identity providers:
 
-Local: `rsts:sts:primaryproviderid:local`
-Certificate: `rsts:sts:primaryproviderid:certificate`
+- Local: `rsts:sts:primaryproviderid:local`
+- Certificate: `rsts:sts:primaryproviderid:certificate`
 
-The SDKs and open source projects take care of detecting Active Directory `scope`
-values.
+The SDKs and open source projects take care of detecting Active Directory and other `scope`
+values. However, if needed, you can make the following request programmatically
+or even in your web browser to get the complete list of authentication providers
+and their associated `scope` value:
+```
+https://<your server>/service/Core/v4/AuthenticationProviders
+```
 
-The resulting HTTP request looks something like this:
+Continuing on with the example, the resulting HTTP `curl` request looks something like this:
 
 ```Text
 0000: POST /RSTS/oauth2/token HTTP/2
@@ -136,7 +159,19 @@ The resulting HTTP request looks something like this:
 0040: min123", "scope": "rsts:sts:primaryproviderid:local" }
 ```
 
-An example of exchanging the rSTS token for the SPP API token:
+You will receive a standard OAuth 2.0 JSON response with one of the key names
+equal to `access_token`.
+```
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1...",
+  "expires_in": 299,
+  "scope": "rsts:sts:primaryproviderid:local:pwd",
+  "success": true,
+  "token_type": "Bearer"
+}
+```
+
+You must then exchange that token for the SPP API token:
 
 ```Bash
 curl -k -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' 'https://<your server>/service/core/v4/Token/LoginResponse' -d '{ "StsAccessToken": "<rsts token>" }'
@@ -173,6 +208,19 @@ The resulting HTTP request looks something like this:
 0480: HA5eE8nd3oerPahzhshDew7sPekrbvT8387bO5grcLo6h9z2vffNDK05r13rM7Ya
 04c0: -gDVAEILhBtHm3dJ_dfqX16S8F4QEhopqOahE3XOXxU0laWO2Dl7nJvZRrkn_MjN
 0500: BRhz5MpiIX1Ox6kv0CNGuPKBui5HT2sDikg-QS1dHYRw1YrqeP_CWeIILcg" }
+```
+
+The response will be a JSON object with one of the key names equal to `UserToken`.
+This is the value you will need to then include in all subsequent SPP API requests.
+```
+{
+  "Status": "Success",
+  "UserToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZFQzY1RDRCNDczMkQyODU...",
+  "PrimaryProviderId": null,
+  "SecondaryProviderId": null,
+  "WebClientInactivityTimeout": 2880,
+  "DesktopClientInactivityTimeout": 1440
+}
 ```
 
 SPP API tokens are JWT bearer tokens. These tokens are embedded in the HTTP
